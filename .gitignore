@@ -1,0 +1,15 @@
+# Dépôt public : seuls le site, ses scripts de publication et les maquettes
+# sont versionnés. Les études, sources vidéo, notes et builds restent locaux.
+/*
+!/.gitignore
+!/README.md
+!/claude-preview/
+!/design/
+!/scripts/
+/scripts/*
+!/scripts/build-production.py
+!/scripts/deploy-production-remote.py
+
+node_modules/
+__pycache__/
+.DS_Store

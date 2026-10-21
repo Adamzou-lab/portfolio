@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>adam. — Traversée</title>
+<meta name="description" content="Adam Zouaoui. Des POCs pour explorer, connecter et automatiser : orchestration d’agents IA, outils et validation humaine.">
+<meta name="theme-color" content="#f4f4f1">
+<script>document.documentElement.classList.add('intro-running')</script>
+<link rel="preload" as="font" type="font/ttf" href="assets/fonts/inter.ttf" crossorigin>
+<link rel="preload" as="image" href="assets/background.webp">
+<link rel="preload" as="image" href="assets/hand-robot.webp">
+<link rel="preload" as="image" href="assets/hand-human.webp">
+<link rel="stylesheet" href="css/atelier.css">
+<link rel="stylesheet" href="css/traversee.css?v=20261004-navigation">
+<link rel="modulepreload" href="js/traversee-projects.js">
+<link rel="preload" as="image" href="assets/traversee-background-v2.png">
+</head>
+<body class="atelier-home traversee-home">
+<a class="skip-link" href="#chapitres">Aller aux projets</a>
+<div class="grain-bg" aria-hidden="true"><img src="assets/background.webp" alt="" draggable="false"></div>
+<noscript>Activez JavaScript pour parcourir les projets et leurs animations.</noscript>
+<div class="portfolio">
+<div class="traverse-screen">
+<header class="traverse-header"><a class="brand" href="traversee.html" aria-label="Adam, accueil">adam.</a><nav class="traverse-top-nav" aria-label="Navigation principale"><a href="about.html?vue=traversee">À propos</a><a href="contact.html?vue=traversee">Contact</a></nav></header>
+<main>
+<section class="traverse-hero" aria-labelledby="portfolio-title">
+<p class="traverse-eyebrow entry">Orchestration d’agents IA & automatisation</p>
+<div class="traverse-introduction"><h1 id="portfolio-title" tabindex="-1" class="entry">Des agents à l’œuvre.<br>Des idées à l’épreuve.</h1>
+<div class="hero-aside entry"><p>J’explore l’orchestration d’agents IA à travers des problèmes concrets. Chaque POC présente une approche, son fonctionnement et ses limites.</p><a href="#chapitres">Découvrir <img class="icon" src="assets/icons/arrow-down.svg" alt=""></a></div></div>
+</section>
+<section id="chapitres" class="chapter-stage" role="tabpanel" aria-labelledby="tab-pennyworth" tabindex="-1">
+<div class="chapter-copy"><span class="chapter-number" aria-hidden="true">01</span><h2>Pennyworth</h2><p class="chapter-subtitle">Planifier. Faire valider. Agir.</p><button class="poc-link" data-open-dossier>Voir le POC<img class="icon" src="assets/icons/arrow-up-right.svg" alt=""></button></div>
+<div class="chapter-demo"><p class="demo-label">Parcours illustratif</p>
+<article class="demo-card request-card"><h3><img src="assets/icons/note.svg" alt=""><span data-request-title>Préparer un onboarding</span></h3><form class="request-form"><label class="sr-only" for="intention">Décrivez votre intention</label><input id="intention" name="intention" placeholder="Décrivez votre intention…" maxlength="140" autocomplete="off"><button type="submit" aria-label="Illustrer le parcours"><img class="icon" src="assets/icons/paper-plane-tilt.svg" alt=""></button></form></article>
+<article class="demo-card plan-card"><h3><img src="assets/icons/list-bullets.svg" alt=""><span data-plan-title>Plan proposé</span></h3><ul class="plan-steps"><li><img src="assets/icons/circle.svg" alt=""><span>Organiser les étapes</span></li><li><img src="assets/icons/circle.svg" alt=""><span>Préparer les actions</span></li><li><img src="assets/icons/circle.svg" alt=""><span>Demander une validation</span></li></ul></article>
+<article class="demo-card review-card"><h3><img src="assets/icons/check-circle.svg" alt=""><span data-review-title>À vous de décider</span></h3><p data-review-copy>Le plan est prêt à être examiné et ajusté.</p><button class="review-button" data-open-dossier><span>Examiner le plan</span><img class="icon" src="assets/icons/arrow-right.svg" alt=""></button></article>
+<p class="demo-feedback" role="status" aria-live="polite"></p>
+</div>
+</section>
+<nav class="chapter-navigation" aria-label="Parcourir les projets"><div role="tablist" aria-label="Les projets"></div><div class="chapter-arrows"><button aria-label="Projet précédent" data-direction="-1"><img class="icon" src="assets/icons/arrow-right.svg" alt=""></button><button aria-label="Projet suivant" data-direction="1"><img class="icon" src="assets/icons/arrow-right.svg" alt=""></button></div></nav>
+<p class="traverse-colophon">Un problème <span>·</span> Un système <span>·</span> Ses limites</p><p class="sr-only" data-chapter-announcement aria-live="polite" aria-atomic="true"></p>
+</main>
+</div>
+<footer class="traverse-footer"><nav aria-label="Navigation complémentaire"><a href="about.html?vue=traversee">À propos</a><a href="contact.html?vue=traversee">Contact</a><a href="index.html">Version Atelier</a></nav><p>Adam Zouaoui · Toulouse</p></footer>
+</div>
+<dialog class="dossier-dialog" aria-labelledby="dossier-title"><div class="dialog-toolbar"><span class="eyebrow">Le dossier</span><button class="dialog-close" aria-label="Fermer le dossier"><img class="icon" src="assets/icons/x.svg" alt=""></button></div><div class="dialog-content"></div></dialog>
+<div class="intro" aria-hidden="true"><img class="intro__hand intro__hand--robot" src="assets/hand-robot.webp" alt="" draggable="false"><img class="intro__hand intro__hand--human" src="assets/hand-human.webp" alt="" draggable="false"></div>
+<canvas class="intro__light" aria-hidden="true"></canvas><button class="intro__skip" type="button" hidden>Passer</button>
+<script src="js/vendor/leader-line.min.js"></script><script src="js/intro.js"></script><script type="module" src="js/traversee.js"></script>
+</body></html>

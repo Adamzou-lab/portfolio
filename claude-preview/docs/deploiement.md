@@ -1,0 +1,132 @@
+# Publication et maintenance d’adamzou.fr
+
+Dernière mise à jour : 19 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261019-141855` (CV d’octobre et lien LinkedIn corrigé, voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+
+## CV d’octobre et lien LinkedIn, 19 octobre
+
+Publication autorisée par Adam. Changements :
+- Le PDF est remplacé par le CV d’octobre, SHA-256 `0309968f5ec14d47a52d0a4a42274c7fafeccbbee7f806f1aafd1191fb86db1b`, 69 596 octets. Il est généré par `Documents/ChatGPT/alternance/sources/build_cv_octobre.py`.
+- L’aperçu PNG est régénéré en 1200 × 1698.
+- Sur Contact : date « 19 octobre 2026 », poids « 70 Ko », LinkedIn `https://www.linkedin.com/in/adamzouaoui/` à la place de `/in/adam-zouaoui-7392a53b2/`. Le même lien est corrigé dans trois pages POC locales non publiées.
+
+Cloudflare garde le PDF en cache 4 h (`max-age=14400`, `cf-cache-status: HIT` constaté). Les liens de Contact vers le PDF et le PNG portent donc `?v=20261019`, ce qui change la clé de cache. **À chaque nouveau CV, changer ce paramètre.** L’adresse sans paramètre peut servir l’ancien PDF jusqu’à expiration du cache, sauf purge dans Cloudflare.
+
+Contrôles locaux du build servi depuis une copie (le serveur Python lancé sur `tmp/` dans Documents ne répondait pas) :
+- seuls `index.html`, `about.html`, `contact.html`, le PDF et le PNG diffèrent de la version précédente ; les deux premiers ne changent que par le paramètre de version ;
+- Contact vérifié sur ordinateur et à 375 px, sans défilement horizontal.
+
+Installation par `deploy-production-remote.py`, sans alias SSH (port et clé de la note VPS du vault) :
+- racine `/var/www/pocs-releases/20261019-141855/` ;
+- sauvegarde `/var/backups/adamzou/20261019-141855/`, précédente racine `20261005-072626` ;
+- `nginx -t` réussi et nouvelle page servie au deuxième contrôle.
+
+Contrôle public :
+- accueil, À propos et Contact répondent en 200, et les redirections `/traversee.html` et `/pocs/` restent actives ;
+- PDF versionné identique (`cf-cache-status: MISS`, `inline`), PNG identique ;
+- LinkedIn correct dans le navigateur, sans erreur console.
+
+## Intro à chaque arrivée, 5 octobre
+
+La classe `intro-running` est activée sans consulter `sessionStorage` dans le head de Traversée. Les retours via le cache de navigation sont pris en charge par `pageshow.persisted`. Les anciens callbacks de fondu et de focus sont annulés à la sortie et avant une nouvelle lecture, et le préchargement utilise un jeton d’annulation. La maquette Atelier conserve sa règle historique d’une lecture par session.
+
+Contrôles locaux : deux actualisations successives, retour historique depuis À propos, bouton Passer, changement de projet sans relance, version réduite puis retour depuis Contact. Révélation terminée et absence d’erreur console confirmées. L’accueil et `js/intro.js` publics ont des empreintes identiques au build. Version installée dans `/var/www/pocs-releases/20261005-072626/`, sauvegarde de la précédente dans `/var/backups/adamzou/20261005-072626/`. Test Nginx réussi et nouvelle version confirmée au deuxième contrôle après reload gracieux.
+
+## Contrôles de la première version publiée
+
+- Racine de cette première version : `/var/www/pocs-releases/20261004-145013/`. Le deuxième contrôle HTTP après le rechargement Nginx a confirmé cette version. Les racines suivantes sont identifiées par leur propre dossier daté.
+- `https://adamzou.fr/` et `https://www.adamzou.fr/` répondent correctement. L’empreinte de l’accueil public correspond exactement au build.
+- Les 42 ressources publiées ont été contrôlées : 41 empreintes sont identiques. Contact est transformé par la protection des adresses email de Cloudflare ; le différentiel a été inspecté, et l’adresse ainsi que le lien `mailto:` sont correctement restaurés dans le navigateur.
+- L’intro et sa révélation, les cinq onglets, le dossier Hbntory, les liens versionnés vers les pages communes, le RNCP 5 actuel et le RNCP 6 visé ont été contrôlés dans le navigateur public. Aucune erreur console relevée sur Contact.
+- Le clic public sur le CV a téléchargé un PDF de 69 060 octets, identique à la source : SHA-256 `50fdb2348a2170d21c7d8211bfd147f39e7ca569402c9df2dc38dfc2d16de728`. Le navigateur a ajouté `(1)` au fichier local parce que le même nom existait déjà ; le nom demandé par le site reste `CV_ADAM_ZOUAOUI.pdf`.
+
+## Ajustement de la navigation et de l’intro
+
+Adam a demandé de retirer « Rejouer l’intro » et « Intro au ralenti » de Traversée, puis d’ajouter À propos et Contact en haut à droite, à côté du logo placé à gauche. Les deux commandes ont été supprimées du pied de page ; `intro.js` accepte l’absence du bouton de relance sans bloquer le lancement automatique, la révélation ou « Passer ». Le rendu local de cette navigation a été contrôlé à 320 px.
+
+Les paramètres `?intro=1` et `duree` restent utilisables pour les contrôles internes, sans lien ou bouton dédié dans l’interface publique. La version ayant publié l’ensemble de ces ajustements est `/var/www/pocs-releases/20261004-150030/`. L’accueil, `js/intro.js` et `css/traversee.css` reçus en HTTPS avaient des empreintes identiques au build. La capture du navigateur public confirmait les deux liens en haut à droite et l’absence des commandes d’intro dans le pied de page ; aucune erreur console n’avait été relevée.
+
+## Sources et périmètre public
+
+Les sources sont dans `claude-preview/`. Modifier `traversee.html`, `about.html`, `contact.html` et leurs CSS/JS directement. Ajouter les projets dans `js/traversee-projects.js` en suivant [le workflow dédié](ajouter-un-projet.md). Lors d’un changement de CV, remplacer le PDF et son aperçu PNG ensemble, actualiser les métadonnées de Contact et changer le paramètre `?v=` de leurs liens, pour contourner le cache Cloudflare de 4 h.
+
+Depuis la racine du dépôt, `scripts/build-production.py` prépare une nouvelle version datée en UTC dans `tmp/deploy/<version>/`. Il ne modifie pas les maquettes sources.
+
+- `site/` contient les fichiers publics : 42 fichiers dans la version préparée le 4 octobre.
+- `site.tar.gz` contient uniquement ces fichiers.
+- `manifest.json` contient leurs empreintes SHA-256 et reste hors du dossier public.
+- La sortie JSON donne l’identifiant de version et l’empreinte de l’archive.
+
+Le build publie Traversée sous `index.html`, normalise les liens vers `/`, `/about.html` et `/contact.html`, retire le lien Atelier et son script des pages communes, ajoute les URL canoniques, `robots.txt` et `sitemap.xml`. Un paramètre `v=<version>` sur les liens internes vers les pages évite le cache de l’ancien HTML ; il n’est pas ajouté aux URL canoniques.
+
+Les images de l’intro, le fond Traversée v2, les polices, icônes et licences, les scripts nécessaires, ainsi que `CV_ADAM_ZOUAOUI.pdf` et son PNG sont inclus. Atelier, les anciens dossiers POC, `docs/`, `tests/`, `outils/`, le README et les fichiers de travail restent locaux. **Ne pas lancer `claude-preview/outils/build_site.py` : ce générateur historique écraserait les pages actuelles. Ne pas publier tout le dépôt.**
+
+## Hébergement et sauvegardes
+
+Le serveur Nginx utilise `/etc/nginx/sites-enabled/hub`, fichier normal qui sert `adamzou.fr` et `www.adamzou.fr`. Le HTTP local est servi directement sur le port 80 ; le HTTPS public est terminé chez Cloudflare. L’include `lockin.conf` doit rester intact. La publication ne modifie ni DNS, ni les autres services du VPS.
+
+Chaque version est installée dans `/var/www/pocs-releases/<version>/`. L’ancienne racine `/var/www/pocs` est conservée, de même que les racines des versions suivantes. Le script sauvegarde la racine en service et la configuration avant chaque bascule, hors de la racine web :
+
+```text
+/var/backups/adamzou/<version>/
+  ancien-portfolio.tar.gz
+  nginx-hub.conf
+  deployment.json         # écrit après succès
+```
+
+La sauvegarde de l’ancien portfolio d’origine est :
+
+```text
+/var/backups/adamzou/20261004-144529/ancien-portfolio.tar.gz
+/var/backups/adamzou/20261004-144529/nginx-hub.conf
+```
+
+Les accès SSH sont définis dans la configuration et les notes de référence du vault. Ne pas recopier de clé, mot de passe ou autre secret dans ce document, le dépôt ou l’archive de publication.
+
+## Préparer une mise à jour
+
+Depuis la racine du dépôt :
+
+```sh
+python3 scripts/build-production.py
+```
+
+Conserver l’identifiant et le SHA-256 affichés. Inspecter les trois HTML produits, les liens, le nom de téléchargement du CV et le contenu du manifeste. Pour vérifier le résultat exact avant publication, servir le dossier `site/` de cette version avec un serveur local et examiner : intro forcée par `?intro=1`, cinq projets et dossiers, retours vers l’accueil, navigation À propos / Contact en haut à droite, PDF, affichage mobile et mouvements réduits. Vérifier aussi l’absence des commandes de relance et de ralenti dans le pied de page. Les tests pertinents au changement peuvent être lancés depuis `claude-preview/` ; aucun test Atelier n’est nécessaire pour une simple modification de texte sur Traversée.
+
+## Transférer et activer
+
+La séquence suivante est à utiliser uniquement pour une publication autorisée. Renseigner `RELEASE` avec l’identifiant effectivement créé et `ADAMZOU_SSH_TARGET` avec la destination SSH existante du vault, disposant des droits root attendus par le script. Les valeurs ci-dessous sont des exemples à remplacer, pas des identifiants d’accès.
+
+```sh
+RELEASE='YYYYMMDD-HHMMSS'
+ADAMZOU_SSH_TARGET='alias-ssh-du-vault'
+DEPLOY_DIR="tmp/deploy/$RELEASE"
+ARCHIVE_SHA=$(shasum -a 256 "$DEPLOY_DIR/site.tar.gz" | cut -d ' ' -f 1)
+CONFIG_SHA=$(ssh "$ADAMZOU_SSH_TARGET" 'sha256sum /etc/nginx/sites-enabled/hub' | cut -d ' ' -f 1)
+scp "$DEPLOY_DIR/site.tar.gz" "$ADAMZOU_SSH_TARGET:/tmp/adamzou-$RELEASE.tar.gz"
+ssh "$ADAMZOU_SSH_TARGET" python3 - "$RELEASE" "$ARCHIVE_SHA" "$CONFIG_SHA" < scripts/deploy-production-remote.py
+```
+
+Le script vérifie les empreintes de l’archive et de la configuration, crée les sauvegardes, extrait uniquement les fichiers dans la nouvelle racine, puis remplace atomiquement la configuration. Il conserve les autres directives du vhost et l’include Lockin. Les redirections des anciennes adresses sont ajoutées lors de la première bascule, sans les dupliquer aux suivantes.
+
+Après `nginx -t` et le rechargement gracieux, le script compare la réponse HTTP locale à l’`index.html` installé, jusqu’à 12 contrôles espacés de 0,4 seconde. L’échec du test Nginx, du rechargement ou du contrôle déclenche la restauration de la configuration précédente, suivie d’un test et d’un rechargement. Les fichiers des versions restent disponibles.
+
+Le premier essai avait contrôlé la réponse avant que les nouveaux workers Nginx ne prennent le relais : il a correctement effectué un retour arrière. Cette attente a été corrigée ; la tentative suivante a réussi. Ne pas supprimer la boucle de vérification sous prétexte que `reload` a déjà rendu la main.
+
+La sortie JSON et `deployment.json` consignent la nouvelle racine, la précédente, les empreintes et le nombre de contrôles nécessaires. Un succès local ne remplace pas le contrôle public : ouvrir `https://adamzou.fr/?intro=1&v=<version>`, puis À propos, Contact, le PDF et les redirections, et vérifier les erreurs réseau ou JavaScript. Les liens versionnés permettent d’éviter les anciennes pages conservées dans un navigateur ; ne pas confondre cet ancien cache avec un échec du serveur.
+
+## Revenir à la version précédente
+
+Sur le VPS en root, sélectionner le dossier de sauvegarde de la bascule à annuler. Son `nginx-hub.conf` pointe déjà vers la racine précédemment en service, laissée intacte. Pour restaurer le portfolio d’origine, sélectionner `20261004-144529`. Pour annuler une mise à jour ultérieure, sélectionner sa propre sauvegarde, et vérifier la directive `root` avant l’action.
+
+```sh
+set -e
+BACKUP_VERSION='YYYYMMDD-HHMMSS'
+BACKUP_DIR="/var/backups/adamzou/$BACKUP_VERSION"
+test -f "$BACKUP_DIR/nginx-hub.conf"
+cp -p /etc/nginx/sites-enabled/hub "$BACKUP_DIR/nginx-hub-avant-retour.conf"
+cp -p "$BACKUP_DIR/nginx-hub.conf" /etc/nginx/.adamzou-hub-rollback
+mv /etc/nginx/.adamzou-hub-rollback /etc/nginx/sites-enabled/hub
+nginx -t && systemctl reload nginx
+```
+
+La copie temporaire est placée hors de `sites-enabled`, puis déplacée atomiquement vers `hub`. Après succès, contrôler la réponse du vhost local et le site public. Si `nginx -t` échoue, ne pas recharger : la configuration en mémoire continue de servir, et la copie `nginx-hub-avant-retour.conf` permet de rétablir le fichier antérieur au retour arrière. L’extraction de l’archive n’est normalement pas nécessaire puisque les racines sont conservées ; ne pas supprimer une ancienne racine ou sauvegarde pendant une publication.

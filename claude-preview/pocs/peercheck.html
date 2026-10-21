@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fr" data-lang="fr" data-title-fr="PeerCheck · Adam Zouaoui" data-title-en="PeerCheck · Adam Zouaoui">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PeerCheck · Adam Zouaoui</title>
+<meta name="description" content="Un de nos projets Holberton avait une Task 5 prévue en auto-validation, mais on aurait préféré avoir un vrai retour structuré. J'ai construit un outil qui lit le repo GitHub et retourne un feedback IA honnête : ce qui est bien, ce qui manque, ce qui reste à acquérir.">
+<meta property="og:title" content="PeerCheck · Adam Zouaoui">
+<meta property="og:description" content="Un de nos projets Holberton avait une Task 5 prévue en auto-validation, mais on aurait préféré avoir un vrai retour structuré. J'ai construit un outil qui lit le repo GitHub et retourne un feedback IA honnête : ce qui est bien, ce qui manque, ce qui reste à acquérir.">
+<meta name="theme-color" content="#ededeb">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111110'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-size='40' fill='%23f4f4f1'%3EA.%3C/text%3E%3C/svg%3E">
+<script>(function(d){var l='fr';try{var s=localStorage.getItem('az-lang');if(s==='en'||s==='fr')l=s}catch(e){}d.setAttribute('data-lang',l);d.lang=l;})(document.documentElement);</script>
+<link rel="preload" as="image" href="../assets/background.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="page-poc">
+<a class="skip-link" href="#contenu"><span data-l="fr">Aller au contenu</span><span data-l="en" lang="en">Skip to content</span></a>
+<div class="grain-bg grain-bg--static" aria-hidden="true"><img src="../assets/background.webp" alt="" draggable="false"></div>
+<div class="portfolio">
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="logo" href="../index.html" data-aria-fr="Adam, accueil" data-aria-en="Adam, home" aria-label="Adam, accueil">Adam.</a>
+    <nav class="nav" data-aria-fr="Navigation principale" data-aria-en="Main navigation" aria-label="Navigation principale">
+      <a href="../index.html#journal" aria-current="page">POCs</a>
+      <a href="../about.html"><span data-l="fr">À propos</span><span data-l="en" lang="en">About</span></a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+    <div class="lang" role="group" data-aria-fr="Langue" data-aria-en="Language" aria-label="Langue">
+      <button type="button" data-set-lang="fr" aria-pressed="true" lang="fr">FR</button><button type="button" data-set-lang="en" aria-pressed="false" lang="en">EN</button>
+    </div>
+  </div>
+</header>
+<main id="contenu">
+<article class="poc">
+  <header class="wrap poc-head">
+    <a class="btn btn--ghost btn--sm" href="../index.html#journal"><svg class="i-left" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 8H3M7 4 3 8l4 4"/></svg> Journal</a>
+    <p class="eyebrow"><span>N° 03</span><span class="sep">·</span><time datetime="2026-06"><span data-l="fr">Juin 2026</span><span data-l="en" lang="en">June 2026</span></time></p>
+    <h1 class="page-head__title" id="portfolio-title">PeerCheck</h1>
+    <p data-l="fr" class="page-head__lead">Un de nos projets Holberton avait une Task 5 prévue en auto-validation, mais on aurait préféré avoir un vrai retour structuré. J'ai construit un outil qui lit le repo GitHub et retourne un feedback IA honnête : ce qui est bien, ce qui manque, ce qui reste à acquérir.</p><p data-l="en" lang="en" class="page-head__lead">One of our Holberton projects had a Task 5 designed as self-validation, but a real structured review would have been far more valuable. I built a tool that reads the GitHub repo and returns honest AI feedback: what works, what to improve, what's missing.</p>
+    <ul class="tags"><li>Node.js</li><li>Express</li><li>SSE</li><li>Claude API</li><li>VPS</li></ul>
+    <div class="actions">
+      <a class="btn btn--solid" href="https://peercheck.adamzou.fr" target="_blank" rel="noopener"><span data-l="fr">Ouvrir</span><span data-l="en" lang="en">Open</span> peercheck.adamzou.fr <svg class="i-out" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 11 5M6 4.5h5.5V10"/></svg></a>
+    </div>
+    <dl class="facts"><div><dt><span data-l="fr">tokens max par review</span><span data-l="en" lang="en">max tokens per review</span></dt><dd>900</dd></div><div><dt><span data-l="fr">fichiers lus au maximum</span><span data-l="en" lang="en">files read at most</span></dt><dd>10</dd></div><div><dt><span data-l="fr">caractères par fichier</span><span data-l="en" lang="en">characters per file</span></dt><dd>3 000</dd></div><div><dt><span data-l="fr">pour une review complète</span><span data-l="en" lang="en">for a full review</span></dt><dd>&lt; 10 s</dd></div></dl>
+  </header>
+  <div class="wrap poc-body">
+    <nav class="toc" data-aria-fr="Sommaire" data-aria-en="Contents" aria-label="Sommaire">
+      <a href="#probleme"><span>01</span><span data-l="fr">Le problème</span><span data-l="en" lang="en">The problem</span></a>
+      <a href="#approche"><span>02</span><span data-l="fr">Mon approche</span><span data-l="en" lang="en">My approach</span></a>
+      <a href="#poc"><span>03</span><span data-l="fr">Le POC</span><span data-l="en" lang="en">The POC</span></a>
+      <a href="#appris"><span>04</span><span data-l="fr">Ce que j'en ai appris</span><span data-l="en" lang="en">What I took away</span></a>
+      <a href="#prod"><span>05</span><span data-l="fr">Ce que je ferais en prod</span><span data-l="en" lang="en">What I'd do in prod</span></a>
+    </nav>
+    <div class="poc-sections panel">
+      <section class="poc-sec" id="probleme" aria-labelledby="probleme-t">
+        <h2 id="probleme-t"><span class="n">01</span><span data-l="fr">Le problème</span><span data-l="en" lang="en">The problem</span></h2>
+        <p data-l="fr">Un de nos projets Holberton avait une Task 5 où les étudiants étaient censés valider leur propre travail. Mais ce projet-là nous paraissait différent : on voulait vraiment savoir si on avait bien fait, pas juste cocher une case. On en a parlé entre camarades et on était d'accord : un vrai retour structuré aurait été bien plus utile que l'auto-évaluation. Mon SWE m'a entendu le dire et s'est tourné vers moi en particulier : il savait que j'avais déjà plus de bagage sur les outils IA que le reste de la cohorte. « Adam, tu devrais faire la manual review toi-même. » C'est cette phrase qui est devenue l'idée.</p><p data-l="en" lang="en">One of our Holberton projects had a Task 5 where students were supposed to validate their own work. But this particular project felt different. We genuinely wanted to know if we'd done it right, not just tick a box. My classmates and I talked about it and agreed: a real structured review would have been far more useful than self-assessment. My SWE heard me say that and turned to me specifically: he knew I already had more background with AI tools than the rest of the cohort. “Adam, you should do the manual review yourself.” That comment became the idea.</p>
+      </section>
+      <section class="poc-sec" id="approche" aria-labelledby="approche-t">
+        <h2 id="approche-t"><span class="n">02</span><span data-l="fr">Mon approche</span><span data-l="en" lang="en">My approach</span></h2>
+        <p data-l="fr">J'ai construit une API Node.js qui lit un repo GitHub via la REST API, filtre les fichiers pertinents, et stream une review structurée en trois sections via Claude Haiku. Avant de générer quoi que ce soit, une validation en deux niveaux vérifie si le repo correspond bien à la Task AI-IDE : d'abord un scan de mots-clés à zéro token sur le README, puis un appel preflight Haiku qui rejette les repos sans rapport avec la task. Les repos invalides sont bloqués avant de consommer des tokens de génération. La review stream mot par mot via SSE, pour que les étudiants voient le retour apparaître progressivement.</p><p data-l="en" lang="en">I built a Node.js API that reads a GitHub repo through the REST API, filters the relevant files, and streams a structured three-section review using Claude Haiku. Before generating anything, a two-tier validation step checks whether the repo actually matches the AI-IDE task: first a zero-token keyword scan on the README, then a Haiku preflight call that rejects repos unrelated to the task. This way, invalid repos are blocked before consuming any generation tokens. The review streams word by word via SSE, so students see the output appear progressively rather than waiting for a full response.</p>
+      </section>
+      <section class="poc-sec" id="poc" aria-labelledby="poc-t">
+        <h2 id="poc-t"><span class="n">03</span><span data-l="fr">Le POC</span><span data-l="en" lang="en">The POC</span></h2>
+        <p data-l="fr">Une API Node.js + Express déployée sur VPS derrière Nginx. SSE streaming pour que la review apparaisse mot par mot au fur et à mesure de la génération. Validation en deux niveaux : scan de mots-clés zéro token sur le README, puis appel preflight Haiku pour confirmer que le repo correspond à la Task AI-IDE. Maximum 900 tokens pour la review, 10 fichiers lus, 3000 caractères par fichier. La review est structurée en trois sections fixes : ce qui est bien, ce qui est à améliorer, ce qui n'est pas acquis. Envoi optionnel par email via Resend. Un AbortController stoppe le stream Claude immédiatement si l'étudiant ferme le navigateur. Une review complète tourne en moins de 10 secondes.</p><p data-l="en" lang="en">A Node.js + Express API deployed on VPS behind Nginx. SSE streaming so the review appears word by word as it generates. Two-tier validation: zero-token keyword check on the README, then a Haiku preflight call to confirm the repo matches the AI-IDE task. Max 900 tokens for the review, max 10 files read, 3000 characters per file. The review is structured in three fixed sections: what works, what to improve, what is not yet mastered. Optional email delivery via Resend. An AbortController stops the Claude stream immediately if the student closes the browser. A full review runs in under 10 seconds.</p>
+      </section>
+      <section class="poc-sec poc-sec--lesson" id="appris" aria-labelledby="appris-t">
+        <h2 id="appris-t"><span class="n">04</span><span data-l="fr">Ce que j'en ai appris</span><span data-l="en" lang="en">What I took away</span></h2>
+        <p data-l="fr" class="lesson">C'est la précision du périmètre qui rend le résultat fiable.</p><p data-l="en" lang="en" class="lesson">Constraining the scope is what makes the output trustworthy.</p>
+        <p data-l="fr">Le vrai travail, c'était de définir exactement ce que PeerCheck devait évaluer, et rien au-delà. C'est cette contrainte qui a rendu le feedback de l'IA vraiment utilisable. Je suis rentré dans ce projet sans savoir ce qu'était du SSE ni comment appeler une API. J'en suis sorti convaincu qu'un outil qui fait une seule chose bien produit des résultats dont on peut se porter garant.</p><p data-l="en" lang="en">The real work was defining exactly what PeerCheck should evaluate and nothing beyond that. That precision is what made the AI feedback actually usable. I went in knowing nothing about SSE or the Claude API. I came out convinced that a tool which does one thing well produces results you can stand behind.</p>
+      </section>
+      <section class="poc-sec" id="prod" aria-labelledby="prod-t">
+        <h2 id="prod-t"><span class="n">05</span><span data-l="fr">Ce que je ferais en prod</span><span data-l="en" lang="en">What I'd do in prod</span></h2>
+        <p data-l="fr">J'ajouterais un tableau de bord pour que l'enseignant puisse voir qui a soumis son repo et quand. J'éviterais de relancer l'IA sur le même repo deux fois si rien n'a changé. Si plusieurs étudiants soumettent en même temps, j'ajouterais une file d'attente pour ne pas cramer la limite d'API. L'objectif final, c'est que PeerCheck puisse reviewer n'importe quel repo GitHub, pas uniquement ce projet Holberton.</p><p data-l="en" lang="en">I'd add a dashboard for the teacher to see who submitted and when. I'd avoid re-running the AI on the same repo twice if nothing changed. If multiple students submit at the same time, I'd add a queue so requests don't pile up and hit the API limit. The real end goal is to make PeerCheck work for any GitHub repo, not just this one Holberton project.</p>
+      </section>
+    </div>
+  </div>
+  <nav class="wrap poc-nav" data-aria-fr="Autres POCs" data-aria-en="Other POCs" aria-label="Autres POCs"><a class="panel prev" href="az-qcm.html"><small><svg class="i-left" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 8H3M7 4 3 8l4 4"/></svg> <span data-l="fr">POC précédent</span><span data-l="en" lang="en">Previous POC</span></small><strong>AZ·QCM</strong></a><a class="panel next" href="../contact.html"><small><span data-l="fr">Et maintenant</span><span data-l="en" lang="en">What next</span> <svg class="i-right" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8h10.5M9 4l4 4-4 4"/></svg></small><strong><span data-l="fr">Travaillons ensemble</span><span data-l="en" lang="en">Let’s work together</span></strong></a></nav>
+</article>
+</main>
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <p class="site-footer__sig"><a class="logo" href="../index.html">Adam.</a><span><span data-l="fr">Journal de POCs · Toulouse</span><span data-l="en" lang="en">POC Journal · Toulouse</span></span></p>
+    <nav class="site-footer__links" data-aria-fr="Pied de page" data-aria-en="Footer" aria-label="Pied de page">
+      <a href="../index.html#journal">POCs</a>
+      <a href="../about.html"><span data-l="fr">À propos</span><span data-l="en" lang="en">About</span></a>
+      <a href="../contact.html">Contact</a>
+      <a href="https://github.com/Adamzou-lab" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/adamzouaoui/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </nav>
+    <p class="site-footer__legal">© 2026 Adam Zouaoui</p>
+  </div>
+</footer>
+</div>
+<script src="../js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>adam. — Orchestration d’agents IA & automatisation</title>
+<meta name="description" content="Adam Zouaoui. Des POCs pour explorer, connecter et automatiser : orchestration d’agents IA, outils et validation humaine.">
+<meta name="theme-color" content="#f4f4f1">
+<script>try{if(!sessionStorage.getItem('az-intro-seen')||new URLSearchParams(location.search).get('intro')==='1')document.documentElement.classList.add('intro-running')}catch(e){document.documentElement.classList.add('intro-running')}</script>
+<link rel="preload" as="font" type="font/ttf" href="assets/fonts/dm-sans.ttf" crossorigin>
+<link rel="preload" as="image" href="assets/background.webp">
+<link rel="preload" as="image" href="assets/hand-robot.webp">
+<link rel="preload" as="image" href="assets/hand-human.webp">
+<link rel="stylesheet" href="css/atelier.css">
+</head>
+<body class="atelier-home">
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="grain-bg" aria-hidden="true"><img src="assets/background.webp" alt="" draggable="false"></div>
+<div class="portfolio">
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="index.html" aria-label="Adam, accueil">adam.</a>
+<nav class="main-nav" aria-label="Navigation principale"><a href="#projets">Les POCs</a><a href="about.html">À propos</a><a href="contact.html">Contact<img class="icon" src="assets/icons/arrow-up-right.svg" alt=""></a></nav>
+</div></header>
+<main id="contenu" class="home-shell">
+<section class="hero" aria-labelledby="portfolio-title">
+<p class="eyebrow hero-reveal">Orchestration d’agents IA & automatisation</p>
+<h1 id="portfolio-title" class="hero-reveal" tabindex="-1"><span>Du besoin au système</span> <span>qui agit.</span></h1>
+<p class="hero-lead hero-reveal">Des POCs pour explorer, connecter et automatiser.</p>
+<a class="button hero-reveal" href="#projets">Explorer les projets<img class="icon" src="assets/icons/arrow-down.svg" alt=""></a>
+</section>
+<section class="orchestration" aria-labelledby="flow-title" data-flow>
+<div class="flow-heading"><div><p class="eyebrow">Dans les coulisses d’un POC</p><h2 id="flow-title">Pennyworth</h2></div><p class="flow-caption">D’une demande à une action concrète,<br>avec un contrôle humain.</p></div>
+<div class="flow-layout">
+<div class="flow-request"><span class="eyebrow">La demande</span><p>« Préparer<br>un onboarding »</p><span class="request-caption">Un exemple de parcours</span></div>
+<div class="flow-chain" role="group" aria-label="Étapes du parcours illustratif"><button class="flow-step" data-flow-step="0" aria-pressed="true"><span class="step-icon"><img class="icon" src="assets/icons/note.svg" alt=""></span><span class="step-label">Demande</span><span class="step-number" aria-hidden="true">01</span></button>
+<span class="flow-link" data-flow-link aria-hidden="true"><img class="icon" src="assets/icons/arrow-right.svg" alt=""></span><button class="flow-step" data-flow-step="1" aria-pressed="false"><span class="step-icon"><img class="icon" src="assets/icons/tree-structure.svg" alt=""></span><span class="step-label">Plan</span><span class="step-number" aria-hidden="true">02</span></button>
+<span class="flow-link" data-flow-link aria-hidden="true"><img class="icon" src="assets/icons/arrow-right.svg" alt=""></span><button class="flow-step flow-step--human" data-flow-step="2" aria-pressed="false"><span class="step-icon"><img class="icon" src="assets/icons/user.svg" alt=""></span><span class="step-label">Validation<br>humaine</span><span class="step-number" aria-hidden="true">03</span></button>
+<span class="flow-link" data-flow-link aria-hidden="true"><img class="icon" src="assets/icons/arrow-right.svg" alt=""></span><button class="flow-step" data-flow-step="3" aria-pressed="false"><span class="step-icon"><img class="icon" src="assets/icons/gear-six.svg" alt=""></span><span class="step-label">Action</span><span class="step-number" aria-hidden="true">04</span></button>
+<span class="flow-link" data-flow-link aria-hidden="true"><img class="icon" src="assets/icons/arrow-right.svg" alt=""></span><button class="flow-step" data-flow-step="4" aria-pressed="false"><span class="step-icon"><img class="icon" src="assets/icons/notebook.svg" alt=""></span><span class="step-label">Journal</span><span class="step-number" aria-hidden="true">05</span></button></div>
+</div>
+<div class="flow-bottom"><div class="flow-explanation" aria-live="polite" aria-atomic="true"><p class="eyebrow" data-flow-status>Parcours illustratif</p><p data-flow-description>Une demande donne le point de départ.</p></div><div class="flow-controls">
+<button class="flow-play" data-flow-play data-flow-play-icon="assets/icons/play.svg" data-flow-pause-icon="assets/icons/pause.svg" data-flow-check-icon="assets/icons/check.svg" data-flow-replay-icon="assets/icons/arrow-counter-clockwise.svg"><img class="icon" src="assets/icons/play.svg" alt=""><span data-flow-play-label>Lancer le parcours</span></button>
+<button class="icon-button" data-flow-restart aria-label="Recommencer le parcours" title="Recommencer le parcours"><img class="icon" src="assets/icons/arrow-counter-clockwise.svg" alt=""></button>
+</div></div>
+<a class="text-link flow-more" href="#pennyworth" data-open-project="pennyworth">Voir le fonctionnement<img class="icon" src="assets/icons/arrow-right.svg" alt=""></a>
+</section>
+<section class="projects" id="projets" aria-labelledby="projects-title">
+<div class="section-heading"><p class="eyebrow">Expériences choisies</p><h2 id="projects-title">Une idée, mise à l’épreuve.</h2><p>Le problème. Les choix. Ce que le POC permet vraiment.</p></div>
+<div class="project-list"><details class="project" id="pennyworth">
+<summary><span class="project-number">01</span><h3>Pennyworth</h3><p>Planifier et faire approuver des actions.</p><span class="project-arrow"><img class="icon" src="assets/icons/arrow-right.svg" alt=""></span></summary>
+<div class="project-body"><div class="project-inner">
+<div class="dossier-top"><span class="eyebrow">Orchestration · Validation humaine</span><span class="dossier-note">POC en équipe</span></div>
+<h4>Un agent propose.<br>Une personne décide.</h4><div class="dossier-grid">
+<div><h5>Le besoin</h5><p>Passer d’une demande en langage naturel à des actions compréhensibles, sans laisser un agent agir sans contrôle.</p><h5>Mon rôle</h5><p>Planification, interface, intégration et travail sur la résilience et l’évaluation. L’exécution a été développée avec Souf.</p></div>
+<div><h5>Le fonctionnement</h5><p>Une boucle modèle–outils construit le plan. Les actions proposées sont enregistrées, soumises à validation, puis exécutées avec leurs traces.</p><h5>Le périmètre</h5><p>GitHub est l’intégration externe documentée. Les fonctions email et calendrier préparent des fichiers, sans envoi réel. Le POC reste limité à un opérateur.</p></div></div>
+<div class="dossier-end"><span>Planification / Outils / Validation / Traces</span><button class="text-link" data-close-project>Refermer le dossier<img class="icon" src="assets/icons/arrow-right.svg" alt=""></button></div>
+</div></div></details>
+<details class="project" id="lockin">
+<summary><span class="project-number">02</span><h3>Lockin</h3><p>Encadrer une veille automatisée.</p><span class="project-arrow"><img class="icon" src="assets/icons/arrow-right.svg" alt=""></span></summary>
+<div class="project-body"><div class="project-inner">
+<div class="dossier-top"><span class="eyebrow">Veille agentique · Sources & budgets</span><span class="dossier-note">POC en équipe</span></div>
+<h4>Explorer des sources.<br>Garder un cadre.</h4><div class="dossier-grid">
+<div><h5>Le besoin</h5><p>Confier une mission de veille à un agent tout en gardant une lecture claire de ses recherches et des ressources consommées.</p><h5>Mon rôle</h5><p>Architecture, boucle agentique, fiabilité, API et intégration. Panaki a travaillé sur l’interface et les parcours.</p></div>
+<div><h5>Le fonctionnement</h5><p>L’agent recherche, lit et conserve ses résultats. Les budgets sont imposés côté serveur ; un journal persistant expose les étapes. Les citations sont confrontées aux extraits lus.</p><h5>Le périmètre</h5><p>Une seule mission active. Pas de reprise autonome après un arrêt brutal, ni de garantie d’exhaustivité ou de vérité. Une source reste à examiner.</p></div></div>
+<div class="dossier-end"><span>Recherche / Lecture / Budgets / Journal</span><button class="text-link" data-close-project>Refermer le dossier<img class="icon" src="assets/icons/arrow-right.svg" alt=""></button></div>
+</div></div></details>
+<details class="project" id="peercheck">
+<summary><span class="project-number">03</span><h3>PeerCheck</h3><p>Relier un dépôt à un retour IA.</p><span class="project-arrow"><img class="icon" src="assets/icons/arrow-right.svg" alt=""></span></summary>
+<div class="project-body"><div class="project-inner">
+<div class="dossier-top"><span class="eyebrow">Intégration API · Retour pédagogique</span><span class="dossier-note">Projet personnel</span></div>
+<h4>Un dépôt à lire.<br>Un retour pour avancer.</h4><div class="dossier-grid">
+<div><h5>Le besoin</h5><p>Obtenir un retour structuré sur un exercice Holberton prévu en auto-validation : comprendre ce qui fonctionne et ce qui mérite encore du travail.</p><h5>Mon rôle</h5><p>Conception et réalisation du parcours, de la sélection du dépôt à la restitution progressive du retour.</p></div>
+<div><h5>Le fonctionnement</h5><p>Le workflow lit le dépôt GitHub, filtre les fichiers et vérifie le périmètre avant de demander une revue à Claude. Le retour est diffusé progressivement.</p><h5>Le périmètre</h5><p>Un workflow assisté par IA sur des exercices ciblés, pas un système autonome multi-agents. Le retour ne remplace pas une validation pédagogique.</p></div></div>
+<div class="dossier-end"><a class="text-link" href="https://peercheck.adamzou.fr" target="_blank" rel="noopener">Ouvrir PeerCheck<img class="icon" src="assets/icons/arrow-up-right.svg" alt=""></a><button class="text-link" data-close-project>Refermer le dossier<img class="icon" src="assets/icons/arrow-right.svg" alt=""></button></div>
+</div></div></details></div>
+</section>
+<section class="conversation"><p class="eyebrow">La suite commence par une discussion</p><h2>Une idée à explorer ?</h2><a class="text-link" href="contact.html">Parlons-en<img class="icon" src="assets/icons/arrow-up-right.svg" alt=""></a></section>
+</main>
+<footer class="site-footer"><div class="footer-inner"><p>Adam Zouaoui · Toulouse</p><nav aria-label="Pied de page"><a href="about.html">À propos</a><a href="contact.html">Contact</a><button class="replay text-link" hidden>Rejouer l’intro<img class="icon" src="assets/icons/arrow-counter-clockwise.svg" alt=""></button><a href="index.html?intro=1&amp;duree=11200">Intro au ralenti</a></nav><span>© 2026</span></div></footer>
+</div>
+<div class="intro" aria-hidden="true"><img class="intro__hand intro__hand--robot" src="assets/hand-robot.webp" alt="" draggable="false"><img class="intro__hand intro__hand--human" src="assets/hand-human.webp" alt="" draggable="false"></div>
+<canvas class="intro__light" aria-hidden="true"></canvas><button class="intro__skip" type="button" hidden>Passer</button>
+<script src="js/intro.js"></script><script type="module" src="js/atelier.js"></script>
+</body></html>
