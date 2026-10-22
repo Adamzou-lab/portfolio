@@ -59,4 +59,12 @@ if (page) {
     observer?.disconnect();
     settle();
   });
+
+  // La barre de navigation reste fixe ; son fond n’apparaît qu’une fois la page défilée.
+  const header = page.querySelector('.site-header');
+  if (header) {
+    const syncHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 4);
+    window.addEventListener('scroll', syncHeader, { passive: true });
+    syncHeader();
+  }
 }

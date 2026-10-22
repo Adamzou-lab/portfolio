@@ -34,7 +34,10 @@ test('chaque dossier documente le rôle et les limites, avec des liens publics f
         assert.equal(url.protocol, 'https:');
         assert.equal(url.username + url.password, '');
         assert.ok(link.label?.trim());
+        // `demo` rend aussi le grand titre du projet cliquable.
+        assert.ok(['demo', 'code'].includes(link.kind), `${id} : kind attendu demo ou code`);
       }
+      assert.ok(d.links.filter(link => link.kind === 'demo').length <= 1, `${id} : une seule démo`);
     }
   }
 });

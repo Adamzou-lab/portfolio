@@ -105,7 +105,8 @@
     skip: document.querySelector('.intro__skip'),
     replay: document.querySelector('.replay'),
     portfolio: document.querySelector('.portfolio'),
-    focusTarget: document.querySelector('#portfolio-title'),
+    // Après « Passer », la tabulation repart du logo pour ne pas sauter la navigation.
+    focusTarget: document.querySelector('.brand') || document.querySelector('#portfolio-title'),
   };
   const ctx = el.canvas.getContext('2d');
   // Le <head> active l'intro avant le premier rendu, à chaque arrivée sur Traversée.

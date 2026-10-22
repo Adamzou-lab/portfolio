@@ -1,6 +1,16 @@
 # Publication et maintenance d’adamzou.fr
 
-Dernière mise à jour : 22 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261022-123626` (liens démo et code dans les dossiers des projets, voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+Dernière mise à jour : 22 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261022-161157` (barre de navigation fixe, titres cliquables vers les démos et corrections d’accessibilité, voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+
+## Retours de la classe et audit front, 22 octobre (après-midi)
+
+Publication autorisée par Adam. Changements :
+- La barre de navigation reste fixe au défilement sur l’accueil, À propos et Contact ; son fond n’apparaît qu’une fois la page défilée (`--header-height` règle aussi l’arrivée des ancres sous la barre).
+- Le grand titre d’un projet ouvre sa démo (`kind: 'demo'` dans `links`) : Lockin et PeerCheck. Pennyworth et Hbntory, sans démo, gardent un titre simple.
+- Corrections issues d’un audit par deux agents (mobile, bureau et accessibilité) : « Découvrir » ne ramène plus à Pennyworth (`popstate`) ; champ de démo à 16 px sur mobile pour éviter le zoom d’iOS ; petits libellés portés à 11 ou 12 px ; contrastes des étapes, du texte d’exemple et des onglets inactifs relevés ; zones tactiles de 44 px sans changer le rendu ; barre et croix du dossier fixes au défilement ; lien d’évitement masqué pendant l’intro ; après « Passer », la tabulation repart du logo ; nom accessible du logo aligné sur « adam. ».
+- Non traités, à arbitrer : poids des images et de la police (3,5 à 5 Mo par page), barre des projets sous la ligne de flottaison à 1920 × 1080, durée de l’intro rejouée à chaque arrivée.
+
+Contrôles : tests 6/6 ; local puis public à 320, 390, 820, 1280 et 1440 px, sans erreur console ni débordement. Installation `/var/www/pocs-releases/20261022-161157/`, sauvegarde `/var/backups/adamzou/20261022-161157/`, précédente racine `20261022-123626`. Public : 41/42 empreintes identiques au build (Contact modifié par la protection email de Cloudflare), redirections actives. Le texte d’exemple du champ, plus grand, peut être coupé dans la carte sur certains projets (Maili).
 
 ## Liens des projets, 22 octobre
 

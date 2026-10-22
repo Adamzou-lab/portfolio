@@ -7,7 +7,7 @@ Chaque projet conserve le même parcours animé : intention → étapes → rés
 1. Lire les sources du projet : README, code, notes récentes. Distinguer le fonctionnement réel, les fonctionnalités prévues et le rôle d’Adam.
 2. Décrire un cas concret en trois panneaux. Garder des titres courts et environ trois étapes lisibles ; les étapes sont rendues depuis le tableau `steps`.
 3. Copier une fiche existante dans `PROJECTS`, choisir un `id` unique et stable (minuscules, chiffres, tirets). L’ordre du tableau détermine les numéros et la navigation. Un lien direct devient `traversee.html#mon-projet`.
-4. Remplir le dossier : besoin, rôle, fonctionnement, périmètre, technologies. `links` liste la démo publique vérifiée et le dépôt public, s’ils existent ; ils remplacent les technologies en bas du dossier. Omettre `links` pour un projet privé ou sans lien public vérifié. Ne mettre aucun secret, courrier réel ou donnée personnelle dans les exemples.
+4. Remplir le dossier : besoin, rôle, fonctionnement, périmètre, technologies. `links` liste la démo publique vérifiée (`kind: 'demo'`, une au plus) et le dépôt public (`kind: 'code'`), s’ils existent ; ils remplacent les technologies en bas du dossier. La démo rend aussi le grand titre du projet cliquable. Omettre `links` pour un projet privé ou sans lien public vérifié. Ne mettre aucun secret, courrier réel ou donnée personnelle dans les exemples.
 5. Exécuter `node --test claude-preview/tests/traversee-projects.test.mjs` depuis la racine du prototype.
 6. Vérifier dans le navigateur : entrée depuis l’intro, changement rapide de projet, animation du parcours, dossier, lien direct et retour arrière. Tester aussi à 820 et 390 px, ainsi qu’avec `?reduit=1`. Le clavier utilise les flèches, Début et Fin. L’onglet sélectionné doit rester visible dans le rail mobile.
 
@@ -32,8 +32,8 @@ Chaque projet conserve le même parcours animé : intention → étapes → rés
     tags: ['Outil', 'Compétence'],
     // Seulement pour une démo ou un dépôt publics vérifiés :
     // links: [
-    //   {url: 'https://…', label: 'Ouvrir la démo'},
-    //   {url: 'https://github.com/…', label: 'Voir le code'},
+    //   {kind: 'demo', url: 'https://…', label: 'Ouvrir la démo'},
+    //   {kind: 'code', url: 'https://github.com/…', label: 'Voir le code'},
     // ],
   },
 },

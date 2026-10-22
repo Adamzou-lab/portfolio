@@ -59,7 +59,13 @@ function showLines(){if(busyIntro() || entering || document.hidden)return;positi
 function paint(index){
   const c=CHAPTERS[index];
   $('.chapter-number').textContent=String(index+1).padStart(2,'0');
-  $('.chapter-copy h2').textContent=c.name;
+  // Le grand titre ouvre la démo publique quand le projet en a une.
+  const demo=c.dossier.links?.find(link=>link.kind==='demo'), title=$('.chapter-copy h2');
+  if(demo){
+    const link=element('a',c.name,'chapter-title-link');link.href=demo.url;link.target='_blank';link.rel='noopener';
+    link.setAttribute('aria-label',`${c.name} : ${demo.label.toLowerCase()} (nouvel onglet)`);link.append(icon('arrow-up-right'));
+    title.replaceChildren(link);
+  }else title.textContent=c.name;
   $('.chapter-subtitle').textContent=c.subtitle;
   $('[data-request-title]').textContent=c.request;
   $('#intention').placeholder=c.placeholder;$('#intention').value='';
@@ -106,7 +112,8 @@ tabs.forEach((tab,i)=>{
   });
 });
 document.querySelectorAll('[data-direction]').forEach(button=>button.addEventListener('click',()=>select(current+Number(button.dataset.direction))));
-window.addEventListener('popstate',()=>select(Math.max(0,CHAPTERS.findIndex(c=>'#'+c.id===location.hash)),{history:false}));
+// Sans ancre, retour au premier projet ; une ancre hors projets (#chapitres, lien d’évitement) ne change pas de projet.
+window.addEventListener('popstate',()=>{const n=location.hash?CHAPTERS.findIndex(c=>'#'+c.id===location.hash):0;if(n>=0)select(n,{history:false});});
 window.addEventListener('hashchange',()=>{const n=CHAPTERS.findIndex(c=>'#'+c.id===location.hash);if(n>=0)select(n,{history:false});});
 
 $('.request-form').addEventListener('submit',ev=>{
@@ -138,10 +145,13 @@ function renderDossier(project){
   $('.dialog-content').replaceChildren(top,title,grid,end);
 }
 function closeDossier(){dialog.close();opener?.focus({preventScroll:true});}
+// La barre du dossier reste fixe ; son fond n’apparaît qu’une fois le contenu défilé.
+const toolbar=$('.dialog-toolbar');
+dialog.addEventListener('scroll',()=>toolbar.classList.toggle('is-scrolled',dialog.scrollTop>4),{passive:true});
 document.querySelectorAll('[data-open-dossier]').forEach(button=>button.addEventListener('click',()=>{
   opener=button;
   renderDossier(CHAPTERS[current]);
-  dialog.showModal();
+  dialog.showModal();dialog.scrollTop=0;toolbar.classList.remove('is-scrolled');
   animate(dialog,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{duration:350,easing:'ease-out'});
 }));
 $('.dialog-close').addEventListener('click',closeDossier);
@@ -159,6 +169,10 @@ window.addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFr
 motion.addEventListener('change',()=>{stopAnimations();stopSequence();positionLines();showLines();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){stopSequence();stopAnimations();}else{positionLines();showLines();}});
 window.addEventListener('pagehide',ev=>{if(!ev.persisted){++entryToken;observer.disconnect();cancelAnimationFrame(resizeFrame);stopAnimations();stopSequence();lines.forEach(l=>l.remove());lines=[];}});
+// La barre de navigation reste fixe ; son fond n’apparaît qu’une fois la page défilée.
+const header=$('.traverse-header');
+const syncHeader=()=>header.classList.toggle('is-scrolled',scrollY>4);
+window.addEventListener('scroll',syncHeader,{passive:true});syncHeader();
 paint(current);
 portfolio.inert=busyIntro();
 await document.fonts.ready;
