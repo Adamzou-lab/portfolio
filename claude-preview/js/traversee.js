@@ -129,8 +129,10 @@ function renderDossier(project){
     grid.append(column);
   });
   const end=element('div',undefined,'dossier-end');
-  if(d.link){
-    const link=element('a',d.link.label,'text-link');link.href=d.link.url;link.target='_blank';link.rel='noopener';link.append(icon('arrow-up-right'));end.append(link);
+  if(d.links?.length){
+    const links=element('div',undefined,'dossier-links');
+    d.links.forEach(({url,label})=>{const link=element('a',label,'text-link');link.href=url;link.target='_blank';link.rel='noopener';link.append(icon('arrow-up-right'));links.append(link);});
+    end.append(links);
   }else end.append(element('span',d.tags.join(' / ')));
   const close=element('button','Refermer le dossier','text-link');close.type='button';close.append(icon('arrow-right'));close.addEventListener('click',closeDossier);end.append(close);
   $('.dialog-content').replaceChildren(top,title,grid,end);

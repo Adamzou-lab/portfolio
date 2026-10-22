@@ -16,7 +16,7 @@ test('chaque projet a une ancre unique et un parcours complet', () => {
   }
 });
 
-test('chaque dossier documente le rôle et les limites, avec un lien public facultatif', () => {
+test('chaque dossier documente le rôle et les limites, avec des liens publics facultatifs', () => {
   for (const {id,dossier:d} of PROJECTS) {
     for (const field of ['eyebrow','type','need','role','system','limits']) {
       assert.ok(typeof d?.[field] === 'string' && d[field].trim(), `${id}.dossier.${field} absent`);
@@ -25,11 +25,16 @@ test('chaque dossier documente le rôle et les limites, avec un lien public facu
       assert.ok(Array.isArray(d[field]) && d[field].length > 0, `${id}.dossier.${field} absent`);
       assert.ok(d[field].every(s => typeof s === 'string' && s.trim()));
     }
-    if (d.link) {
-      const url = new URL(d.link.url);
-      assert.equal(url.protocol, 'https:');
-      assert.equal(url.username + url.password, '');
-      assert.ok(d.link.label?.trim());
+    // L’ancien champ `link` n’est plus lu : le signaler plutôt que l’ignorer.
+    assert.equal(d.link, undefined, `${id}.dossier.link remplacé par links`);
+    if (d.links) {
+      assert.ok(Array.isArray(d.links) && d.links.length > 0, `${id}.dossier.links vide`);
+      for (const link of d.links) {
+        const url = new URL(link.url);
+        assert.equal(url.protocol, 'https:');
+        assert.equal(url.username + url.password, '');
+        assert.ok(link.label?.trim());
+      }
     }
   }
 });

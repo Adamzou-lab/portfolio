@@ -1,6 +1,16 @@
 # Publication et maintenance d’adamzou.fr
 
-Dernière mise à jour : 19 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261019-141855` (CV d’octobre et lien LinkedIn corrigé, voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+Dernière mise à jour : 22 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261022-123626` (liens démo et code dans les dossiers des projets, voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+
+## Liens des projets, 22 octobre
+
+Publication autorisée par Adam. Le champ `links` des fiches remplace `link` : un dossier peut afficher plusieurs liens publics (démo et code), qui prennent la place de la ligne des technologies. Pennyworth : code ; Lockin : démo simulée et code ; PeerCheck : démo ; Hbntory : code ; Maili : aucun lien, dépôt privé. `pennyworth.adamzou.fr` ne répondait pas, d’où l’absence de démo pour Pennyworth.
+
+Contrôles locaux : tests Traversée et Atelier réussis (6/6), cinq dossiers ouverts dans le navigateur à 1440 px et sur mobile, liens et nouvel onglet vérifiés, aucune erreur console. Par rapport à `20261019-141855`, seuls `js/traversee.js`, `js/traversee-projects.js` et `css/traversee.css` changent, plus le paramètre de version des trois pages. Le CSS et les scripts sont servis en `no-store` (`cf-cache-status: BYPASS`) : aucun paramètre de cache à changer.
+
+Installation par `deploy-production-remote.py` : racine `/var/www/pocs-releases/20261022-123626/`, sauvegarde `/var/backups/adamzou/20261022-123626/`, précédente racine `20261019-141855`, `nginx -t` réussi, nouvelle page servie au deuxième contrôle.
+
+Contrôle public : accueil, `www`, À propos, Contact et PDF en 200, redirections `/traversee.html` et `/pocs/` actives ; 41 fichiers sur 42 identiques au build, Contact modifié seulement par la protection des adresses email de Cloudflare. Les cinq dossiers affichent les bons liens dans le navigateur public, sans erreur console.
 
 ## CV d’octobre et lien LinkedIn, 19 octobre
 

@@ -72,7 +72,7 @@
 .dialog-toolbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #0002;padding-bottom:18px;margin-bottom:25px}
 .dialog-close{display:grid;place-items:center;width:40px;height:40px;border:1px solid #bbb;border-radius:50%;background:#fff6}
 .dialog-content h2{font-size:52px;letter-spacing:-.06em;line-height:1.08;margin:30px 0;font-weight:650}.dialog-content h3{font-size:14px;font-weight:650;margin:0 0 9px}
-.dialog-content .dossier-grid{gap:50px}.dialog-content .dossier-end{font-size:10px}
+.dialog-content .dossier-grid{gap:50px}.dialog-content .dossier-end{font-size:10px}.dialog-content .dossier-links{display:flex;flex-wrap:wrap;align-items:center;gap:4px 32px}
 .traversee-home:has(.dossier-dialog[open]){overflow:hidden}
 @media(max-width:1000px){
  .traverse-screen{background-size:cover}

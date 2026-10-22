@@ -17,6 +17,7 @@ export const PROJECTS = [
       system: 'Une boucle modèle–outils construit le plan. Les actions proposées sont enregistrées, soumises à validation, puis exécutées avec leurs traces.',
       limits: 'GitHub est l’intégration externe documentée. Les fonctions email et calendrier préparent des fichiers, sans envoi réel. Le POC reste limité à un opérateur.',
       tags: ['Planification', 'Outils', 'Validation', 'Traces'],
+      links: [{url: 'https://github.com/Souf-F/holberton-hackathonagentic', label: 'Voir le code'}],
     },
   },
   {
@@ -35,6 +36,10 @@ export const PROJECTS = [
       system: 'L’agent recherche, lit et conserve ses résultats. Les budgets sont imposés côté serveur ; un journal persistant expose les étapes. Les citations sont confrontées aux extraits lus.',
       limits: 'Une seule mission active. Pas de reprise autonome après un arrêt brutal, ni de garantie d’exhaustivité ou de vérité. Une source reste à examiner.',
       tags: ['Recherche', 'Lecture', 'Budgets', 'Journal'],
+      links: [
+        {url: 'https://lockin-demo.netlify.app/', label: 'Ouvrir la démo simulée'},
+        {url: 'https://github.com/Adamzou-lab/hackathonagentic-v2', label: 'Voir le code'},
+      ],
     },
   },
   {
@@ -53,7 +58,7 @@ export const PROJECTS = [
       system: 'Le workflow lit le dépôt GitHub, filtre les fichiers et vérifie le périmètre avant de demander une revue à Claude. Le retour est diffusé progressivement.',
       limits: 'Un workflow assisté par IA sur des exercices ciblés, pas un système autonome multi-agents. Le retour ne remplace pas une validation pédagogique.',
       tags: ['GitHub', 'Revue IA', 'Retour pédagogique'],
-      link: {url: 'https://peercheck.adamzou.fr', label: 'Ouvrir PeerCheck'},
+      links: [{url: 'https://peercheck.adamzou.fr', label: 'Ouvrir PeerCheck'}],
     },
   },
   {
@@ -72,6 +77,7 @@ export const PROJECTS = [
       system: 'Le client transmet la question au service IA. Celui-ci utilise les outils MCP pour consulter les produits et les stocks du backoffice, puis restitue une réponse dans le chat. L’agent consulte les stocks en lecture seule.',
       limits: 'POC collectif, aussi nommé Zaiko. Le chat reçoit une réponse complète avant d’en animer l’affichage. Le démarrage de toute la stack Docker sur un environnement neuf reste à confirmer.',
       tags: ['Client web', 'PydanticAI', 'MCP', 'Intégration'],
+      links: [{url: 'https://github.com/Adamzou-lab/holbertonschool-hbntory', label: 'Voir le code'}],
     },
   },
   {
