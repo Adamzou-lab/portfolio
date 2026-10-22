@@ -22,7 +22,7 @@ Ouvrir http://127.0.0.1:4174/traversee.html?intro=1. Pour les contrôles interne
 - `js/traversee-projects.js` : source unique des cinq projets (Pennyworth, Lockin, PeerCheck, Hbntory, Maili). Génère leurs onglets, étapes et dossiers.
 - `css/traversee.css` : composition mesurée sur `../design/maquettes/03-traversee.png` (1487 × 1058), puis responsive.
 - `js/traversee.js` : chapitres, historique, clavier, dossiers et illustration locale de la demande. `SETTINGS` expose les durées : chapitre 820 ms, entrée 1150 ms, connexions 1100 ms, étapes 550 ms.
-- `assets/traversee-background-v2.png` : fond édité avec imagegen depuis la maquette, grain affiné. V1 conservée comme essai non utilisé.
+- `assets/traversee-background-v2.webp` : fond édité avec imagegen depuis la maquette, grain affiné, compressé en WebP depuis le PNG d’origine (historique Git). V1 conservée comme essai non utilisé.
 - Inter variable, Phosphor et LeaderLine 1.0.8 dans `js/vendor/` sont servis localement, licences incluses.
 - En prévisualisation locale, les pages communes conservent le retour vers Traversée avec `?vue=traversee`. Sans ce paramètre, elles reviennent à Atelier. Le build de production normalise ces liens sans paramètre et retire le script de navigation Atelier des pages communes.
 
@@ -36,7 +36,7 @@ Pour les futurs ajouts : suivre [le workflow d’intégration](docs/ajouter-un-p
 - `contact.html?vue=traversee` : coordonnées, disponibilité en alternance et CV. Les deux pages partagent `css/information.css` et `js/information.js`, avec le fond granuleux de Traversée, titres centrés et logo en haut à gauche.
 - Animations d’apparition de 640 ms, respect de `prefers-reduced-motion` et de `?reduit=1`. Le contenu reste visible sans JavaScript.
 - PDF de référence : CV général d’Adam, copié sans modification. Fichier servi et nom de téléchargement : `assets/documents/CV_ADAM_ZOUAOUI.pdf`.
-- `assets/documents/CV_ADAM_ZOUAOUI.png` est un rendu complet de la page PDF à 1200 px de large. Lors du remplacement du CV, remplacer aussi cet aperçu et actualiser sa date et son poids dans Contact. Conserver le nom PDF stable et son attribut `download`.
+- `assets/documents/CV_ADAM_ZOUAOUI.webp` est un rendu complet de la page PDF à 1200 px de large, en WebP sans perte. Lors du remplacement du CV, remplacer aussi cet aperçu et actualiser sa date et son poids dans Contact. Conserver le nom PDF stable et son attribut `download`.
 - La singularité du cursus est qualifiée par « À ma connaissance » et « sur campus à Toulouse », sur le périmètre ingénierie agentique + titre RNCP complet de niveau 6. Sources et limites : recherche du 4 octobre, conservée hors du dépôt public. Ne pas transformer cette recherche limitée en preuve d’exclusivité absolue.
 
 ## Démarrer

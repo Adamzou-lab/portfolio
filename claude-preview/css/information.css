@@ -1,7 +1,7 @@
 /* Pages éditoriales communes : même matière et même typographie que Traversée. */
 @font-face {
   font-family: Inter;
-  src: url('../assets/fonts/inter.ttf') format('truetype');
+  src: url('../assets/fonts/inter.woff2') format('woff2');
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;

@@ -1,6 +1,19 @@
 # Publication et maintenance d’adamzou.fr
 
-Dernière mise à jour : 22 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261022-161157` (barre de navigation fixe, titres cliquables vers les démos et corrections d’accessibilité, voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+Dernière mise à jour : 22 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261022-162330` (pages allégées : fond WebP, polices WOFF2, aperçu du CV en WebP ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+
+## Allègement des pages, 22 octobre (soir)
+
+Publication autorisée par Adam (lot B de l’audit), sans changement de rendu voulu :
+- Fond Traversée : `traversee-background-v2.png` (2,5 Mo) remplacé par `traversee-background-v2.webp` (293 Ko, `cwebp -q 90 -m 6 -sharp_yuv`), écart moyen 1,6/255 sur l’image.
+- Polices : `inter.ttf` (856 Ko) et `dm-sans.ttf` (235 Ko) remplacées par `inter.woff2` (201 Ko) et `dm-sans.woff2` (83 Ko). Sous-ensemble latin étendu (`U+0000-024F`, ponctuation, monnaies, flèches, etc.), axes variables, GSUB et GPOS conservés ; les 112 caractères du site restent couverts. Un nouveau texte dans un alphabet non latin demanderait de refaire le sous-ensemble depuis la police d’origine (historique Git).
+- Aperçu du CV : PNG (368 Ko) remplacé par un WebP sans perte (103 Ko), identique au pixel.
+- Non modifié : `background.webp` de l’intro, déjà compressé ; le recompresser dégradait l’image pour un gain faible.
+- Les originaux restent dans l’historique Git (commit `b269dc6`).
+- Poids transféré sans cache, mesuré en ligne : accueil 5,3 Mo → 2,3 Mo (dont l’intro, 1,5 Mo), À propos 3,5 Mo → 0,5 Mo, Contact 3,8 Mo → 0,6 Mo.
+- Installation `/var/www/pocs-releases/20261022-162330/`, sauvegarde `/var/backups/adamzou/20261022-162330/`, précédente racine `20261022-161157`. 41/42 empreintes publiques identiques au build (Contact : protection email de Cloudflare). Nginx sert les `.woff2` en `application/octet-stream` : les navigateurs les chargent quand même (Inter chargée, vérifié).
+
+Contrôle du rendu : captures en mouvements réduits de l’accueil, du dossier, d’À propos et de Contact à 1440 et 390 px, comparées à la version en ligne précédente : écart moyen inférieur à 1/255, aucun écart notable hors pied de page modifié par le build, métriques verticales des polices identiques.
 
 ## Retours de la classe et audit front, 22 octobre (après-midi)
 
@@ -67,7 +80,7 @@ Les paramètres `?intro=1` et `duree` restent utilisables pour les contrôles in
 
 ## Sources et périmètre public
 
-Les sources sont dans `claude-preview/`. Modifier `traversee.html`, `about.html`, `contact.html` et leurs CSS/JS directement. Ajouter les projets dans `js/traversee-projects.js` en suivant [le workflow dédié](ajouter-un-projet.md). Lors d’un changement de CV, remplacer le PDF et son aperçu PNG ensemble, actualiser les métadonnées de Contact et changer le paramètre `?v=` de leurs liens, pour contourner le cache Cloudflare de 4 h.
+Les sources sont dans `claude-preview/`. Modifier `traversee.html`, `about.html`, `contact.html` et leurs CSS/JS directement. Ajouter les projets dans `js/traversee-projects.js` en suivant [le workflow dédié](ajouter-un-projet.md). Lors d’un changement de CV, remplacer le PDF et son aperçu ensemble (rendu PNG de la page à 1200 px, converti sans perte avec `cwebp -lossless -z 9 aperçu.png -o assets/documents/CV_ADAM_ZOUAOUI.webp`), actualiser les métadonnées de Contact et changer le paramètre `?v=` de leurs liens, pour contourner le cache Cloudflare de 4 h.
 
 Depuis la racine du dépôt, `scripts/build-production.py` prépare une nouvelle version datée en UTC dans `tmp/deploy/<version>/`. Il ne modifie pas les maquettes sources.
 
@@ -78,7 +91,7 @@ Depuis la racine du dépôt, `scripts/build-production.py` prépare une nouvelle
 
 Le build publie Traversée sous `index.html`, normalise les liens vers `/`, `/about.html` et `/contact.html`, retire le lien Atelier et son script des pages communes, ajoute les URL canoniques, `robots.txt` et `sitemap.xml`. Un paramètre `v=<version>` sur les liens internes vers les pages évite le cache de l’ancien HTML ; il n’est pas ajouté aux URL canoniques.
 
-Les images de l’intro, le fond Traversée v2, les polices, icônes et licences, les scripts nécessaires, ainsi que `CV_ADAM_ZOUAOUI.pdf` et son PNG sont inclus. Atelier, les anciens dossiers POC, `docs/`, `tests/`, `outils/`, le README et les fichiers de travail restent locaux. **Ne pas lancer `claude-preview/outils/build_site.py` : ce générateur historique écraserait les pages actuelles. Ne pas publier tout le dépôt.**
+Les images de l’intro, le fond Traversée v2, les polices, icônes et licences, les scripts nécessaires, ainsi que `CV_ADAM_ZOUAOUI.pdf` et son aperçu WebP sont inclus. Atelier, les anciens dossiers POC, `docs/`, `tests/`, `outils/`, le README et les fichiers de travail restent locaux. **Ne pas lancer `claude-preview/outils/build_site.py` : ce générateur historique écraserait les pages actuelles. Ne pas publier tout le dépôt.**
 
 ## Hébergement et sauvegardes
 

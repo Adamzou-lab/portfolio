@@ -1,4 +1,4 @@
-@font-face{font-family:"DM Sans";src:url("../assets/fonts/dm-sans.ttf") format("truetype");font-style:normal;font-weight:100 1000;font-display:swap}
+@font-face{font-family:"DM Sans";src:url("../assets/fonts/dm-sans.woff2") format("woff2");font-style:normal;font-weight:100 1000;font-display:swap}
 :root{--paper:#f5f5f2;--ink:#141413;--muted:#5e5e5a;--line:#c5c5c0;--gutter:clamp(24px,5vw,76px);--wide:1344px;--ease:cubic-bezier(.22,.75,.22,1);--mono:ui-monospace,"SFMono-Regular",Menlo,monospace}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:112px;background:var(--paper);color:var(--ink);-webkit-text-size-adjust:100%}

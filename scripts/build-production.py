@@ -22,8 +22,8 @@ files = [
     'js/intro.js', 'js/traversee.js', 'js/traversee-projects.js', 'js/information.js',
     'js/vendor/leader-line.min.js', 'js/vendor/leader-line.LICENSE',
     'assets/background.webp', 'assets/hand-robot.webp', 'assets/hand-human.webp',
-    'assets/traversee-background-v2.png',
-    'assets/documents/CV_ADAM_ZOUAOUI.pdf', 'assets/documents/CV_ADAM_ZOUAOUI.png',
+    'assets/traversee-background-v2.webp',
+    'assets/documents/CV_ADAM_ZOUAOUI.pdf', 'assets/documents/CV_ADAM_ZOUAOUI.webp',
 ]
 files += [str(p.relative_to(SOURCE)) for directory in ('assets/fonts', 'assets/icons')
           for p in sorted((SOURCE / directory).iterdir()) if p.is_file() and not p.name.startswith('.')]
