@@ -1,6 +1,12 @@
 # Publication et maintenance d’adamzou.fr
 
-Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-165707` (présentations vidéo des quatre projets filmés, Pennyworth cliquable ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-170552` (dossier Hbntory recentré sur la gestion de stock ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+
+## Dossier Hbntory recentré sur la gestion de stock, 24 octobre (soir)
+
+Texte validé par Adam, publication autorisée explicitement. Seul `js/traversee-projects.js` change : sous-titre « Suivre. Agir. Tracer. » (chapitres du film Zaiko), parcours « Réapprovisionner » / « Mouvement de stock » / « Un stock à jour et tracé », dossier « Plusieurs magasins. Un stock sous contrôle. ». Faits repris du dépôt (`README.md`, `docs/mvp.md`, `backoffice/README.md`) : l’administrateur ne modifie pas le stock, chaque employé gère celui de son magasin. La phrase sur le démarrage Docker « à confirmer » est retirée, faute de vérification depuis le correctif du 30/07.
+
+Contrôles : tests 7/7 ; textes de la page et du dossier vérifiés en local puis en ligne, exemple du champ entier à 1440, 820 et 390 px. Seul ce dossier défile légèrement à 1440 × 900 (37 px), la barre et la croix restant fixes. Installation `/var/www/pocs-releases/20261024-170552/`, sauvegarde `/var/backups/adamzou/20261024-170552/`, précédente racine `20261024-165707`. Public : 45/46 fichiers non vidéo identiques (Contact : Cloudflare), aucune erreur console.
 
 ## Présentations vidéo de Zaiko et Maili, Pennyworth cliquable, 24 octobre (soir)
 
