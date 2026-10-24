@@ -1,6 +1,19 @@
 # Publication et maintenance d’adamzou.fr
 
-Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-171802` (scripts et styles versionnés à chaque publication ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-183001` (corrections d’alignement et d’esthétique ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+
+## Corrections d’alignement et d’esthétique, 24 octobre (soir)
+
+Audit visuel demandé par Adam (WebKit, de 320 à 1920 px), lot de cinq corrections validé sur captures locales puis publié sur son autorisation explicite (commit `d1113bb`) :
+- Grands titres de projet à `6vw` au lieu de `6.45vw` (et `min(52px, 15.4vw)` sous 760 px) : la flèche du titre cliquable de Pennyworth touchait ou chevauchait la première carte ; écart désormais de 19 à 36 px, et plus de débordement dans la marge à 320 px.
+- Accueil : `.portfolio` en colonne d’au moins `100dvh`, l’écran Traversée occupe la hauteur restante ; sur tablette en portrait, plus de bande de texture sous le pied de page.
+- Dossier et lecteur vidéo : `tabindex="-1"` et focus sur la fenêtre elle-même à l’ouverture ; l’anneau noir de la croix n’apparaît plus à la souris.
+- Lecteur : fond transparent et `object-fit: cover`, plus de liseré sombre en haut et en bas des films à fond clair.
+- En-tête commun : variables `--header-height` et `--brand-size` ; À propos et Contact reprennent exactement la géométrie de l’accueil (bloc final de `css/information.css`) et les liens sont centrés sur le logo. Mesuré en ligne : logo et liens à la même position sur les trois pages, à 1 px près, de 320 à 1920 px.
+
+Faux positif écarté : la « coupure du fond » d’À propos et Contact n’apparaît que sur une capture pleine page (fond fixe) ; en défilant, le rendu est correct. Non traités, à décider par Adam : texte unique du pied de page, exemples coupés dans le champ, dossier Hbntory qui défile à 1470 × 860.
+
+Installation `/var/www/pocs-releases/20261024-183001/`, sauvegarde `/var/backups/adamzou/20261024-183001/`, précédente racine `20261024-171802`. Public : 45/46 fichiers non vidéo identiques (Contact : Cloudflare), aucune erreur console.
 
 ## Scripts et styles versionnés, 24 octobre (soir)
 
