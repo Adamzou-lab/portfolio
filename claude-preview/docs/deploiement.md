@@ -1,6 +1,15 @@
 # Publication et maintenance d’adamzou.fr
 
-Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-163654` (démos vidéo de Pennyworth et Lockin, textes PeerCheck ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-165707` (présentations vidéo des quatre projets filmés, Pennyworth cliquable ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+
+## Présentations vidéo de Zaiko et Maili, Pennyworth cliquable, 24 octobre (soir)
+
+Publication autorisée explicitement par Adam, qui a validé Zaiko v4 « stock » et Maili v1 « série ». Changements :
+- Le bouton devient « Présentation vidéo · N s » (et le titre du lecteur « Présentation vidéo · Projet ») pour ne pas confondre les films avec les démos interactives.
+- Films ajoutés : `assets/videos/hbntory.mp4` (Zaiko, 37 s, 2,55 Mo) et `maili.mp4` (37 s, 2,88 Mo), avec leurs miniatures WebP. PeerCheck reste sans film.
+- Pennyworth : lien `demo` vers `https://pennyworth.adamzou.fr` (hébergé sur Render, plan gratuit : premier chargement lent après une mise en veille). Hbntory n’a pas de version publique ; Maili reste sans lien à la demande d’Adam.
+
+Contrôles : tests 7/7 ; local à 1440, 390 et 320 px (à 320 px le bouton passe sous « Voir le POC », sans débordement). Installation `/var/www/pocs-releases/20261024-165707/`, sauvegarde `/var/backups/adamzou/20261024-165707/`, précédente racine `20261024-163654`. Public : 49/50 empreintes identiques (Contact : Cloudflare), nouveaux MP4 en `206` sur requête `Range` ; les quatre lecteurs, les liens des cinq dossiers et les titres cliquables (Pennyworth, Lockin, PeerCheck) vérifiés dans le navigateur public, sans erreur console.
 
 ## Démos vidéo et textes PeerCheck, 24 octobre
 
