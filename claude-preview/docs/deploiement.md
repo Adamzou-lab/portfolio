@@ -1,6 +1,15 @@
 # Publication et maintenance d’adamzou.fr
 
-Dernière mise à jour : 22 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261022-162330` (pages allégées : fond WebP, polices WOFF2, aperçu du CV en WebP ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-163654` (démos vidéo de Pennyworth et Lockin, textes PeerCheck ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+
+## Démos vidéo et textes PeerCheck, 24 octobre
+
+Publication autorisée explicitement par Adam. Changements :
+- Bouton « Démo vidéo · N s » à côté de « Voir le POC » pour Pennyworth (34 s) et Lockin (36 s), champ `video` des fiches. Le lecteur s’ouvre dans un `<dialog>` au style du dossier ; la vidéo n’est créée qu’au clic et retirée à la fermeture, l’accueil ne charge donc rien de plus.
+- Nouveaux fichiers : `assets/videos/pennyworth.mp4` (2,35 Mo), `lockin.mp4` (3,26 Mo) et leurs miniatures WebP. Le build publie tout le dossier `assets/videos/`.
+- Textes PeerCheck alignés sur sa grille d’évaluation (commit `6b4e9d6`).
+
+Contrôles : tests 7/7 ; local à 1440, 820, 390 et 320 px, Échap, croix, clic hors cadre, focus rendu au bouton, mouvements réduits sans lecture automatique. Installation `/var/www/pocs-releases/20261024-163654/`, sauvegarde `/var/backups/adamzou/20261024-163654/`, précédente racine `20261022-162330`, `nginx -t` réussi, page servie au deuxième contrôle. Public : 45/46 empreintes identiques au build (Contact : protection email de Cloudflare). Les MP4 sont servis en `video/mp4` et répondent `206` aux requêtes `Range`, ce qui permet d’avancer dans le film (Safari l’exige). Lecture, saut à 20 s et fermeture vérifiés dans le navigateur public, sans erreur console.
 
 ## Allègement des pages, 22 octobre (soir)
 
