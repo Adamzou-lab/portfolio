@@ -1,6 +1,12 @@
 # Publication et maintenance d’adamzou.fr
 
-Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-170552` (dossier Hbntory recentré sur la gestion de stock ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-171802` (scripts et styles versionnés à chaque publication ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+
+## Scripts et styles versionnés, 24 octobre (soir)
+
+Constat dans le Safari d’Adam après rechargement : nouveau `traversee.js` (libellé « Présentation vidéo ») mais ancien `traversee-projects.js` (Pennyworth sans lien, Hbntory sans film). Safari a resservi le module importé d’une version précédente malgré `Cache-Control: no-store`. Correctif dans `scripts/build-production.py` (commit `748bdb7`) : chaque `src`/`href` vers `js/` ou `css/` des trois pages reçoit `?v=<version>`, et l’import de `js/traversee.js` pointe vers `./traversee-projects.js?v=<version>` (même adresse que le `modulepreload`, donc un seul chargement). Les sources ne changent pas ; seule la copie publiée est réécrite.
+
+Publication autorisée explicitement par Adam. Installation `/var/www/pocs-releases/20261024-171802/`, sauvegarde `/var/backups/adamzou/20261024-171802/`, précédente racine `20261024-170552`. Contrôles : build servi en local (`portfolio-builds`, port 4175) puis public, cinq projets corrects, 45/46 fichiers non vidéo identiques (Contact : Cloudflare), aucune erreur console. Dans le Safari d’Adam, un simple rechargement affiche le titre Pennyworth cliquable.
 
 ## Dossier Hbntory recentré sur la gestion de stock, 24 octobre (soir)
 
