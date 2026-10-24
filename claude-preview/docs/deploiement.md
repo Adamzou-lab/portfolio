@@ -1,6 +1,15 @@
 # Publication et maintenance d’adamzou.fr
 
-Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-183001` (corrections d’alignement et d’esthétique ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-185118` (pied de page commun, exemples du champ entiers, dossier Hbntory plus court ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+
+## Textes restants de l’audit, 24 octobre (soir)
+
+Trois propositions validées telles quelles par Adam, publication autorisée explicitement (commit `ed68d67`) :
+- Pied de page d’À propos et Contact : « Adam Zouaoui · Toulouse », comme l’accueil (l’ordre des éléments reste propre à chaque page).
+- Exemples du champ raccourcis pour tenir entiers de 320 à 1920 px : « Votre intention… », « Votre question… », « github.com/toi/… », « 10 routeurs… », « Facture, promo… ».
+- Dossier Hbntory, « Le fonctionnement » raccourci (la disponibilité entre magasins reste citée dans « Mon rôle ») : plus de défilement en 1470 × 860 ni 1440 × 900.
+
+Contrôles en local puis en ligne (WebKit) : aucun exemple coupé à 320, 390, 820, 1024, 1280, 1440, 1470 et 1920 px, dossier Hbntory sans défilement sur ces deux écrans, pied de page vérifié, aucune erreur ; tests 7/7. Installation `/var/www/pocs-releases/20261024-185118/`, sauvegarde `/var/backups/adamzou/20261024-185118/`, précédente racine `20261024-183001`. Public : 45/46 fichiers non vidéo identiques (Contact : Cloudflare).
 
 ## Corrections d’alignement et d’esthétique, 24 octobre (soir)
 
