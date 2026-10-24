@@ -43,7 +43,7 @@ test('chaque dossier documente le rôle et les limites, avec des liens publics f
   }
 });
 
-test('chaque démo vidéo facultative pointe vers des fichiers publiés et affiche sa durée', () => {
+test('chaque présentation vidéo facultative pointe vers des fichiers publiés et affiche sa durée', () => {
   for (const {id,video} of PROJECTS) {
     if (video === undefined) continue;
     for (const field of ['src','poster']) {

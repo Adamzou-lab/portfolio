@@ -76,9 +76,9 @@ function paint(index){
   $('[data-review-title]').textContent=c.review;
   $('[data-review-copy]').textContent=c.copy;
   $('.review-button span').textContent=c.action;
-  // Le bouton de démo vidéo n’apparaît que pour les projets qui ont un film.
+  // Le bouton de présentation vidéo n’apparaît que pour les projets qui ont un film.
   const video=$('[data-open-video]');video.hidden=!c.video;
-  if(c.video){video.querySelector('.video-label').textContent=`Démo vidéo · ${c.video.duration} s`;video.setAttribute('aria-label',`Démo vidéo de ${c.name}, ${c.video.duration} secondes`);}
+  if(c.video){video.querySelector('.video-label').textContent=`Présentation vidéo · ${c.video.duration} s`;video.setAttribute('aria-label',`Présentation vidéo de ${c.name}, ${c.video.duration} secondes`);}
   $('.demo-feedback').textContent='';
   stage.dataset.chapter=c.id;
   stage.setAttribute('aria-labelledby',tabs[index].id);
@@ -166,7 +166,7 @@ const videoDialog=$('.video-dialog'), videoFrame=$('.video-frame');
 $('[data-open-video]').addEventListener('click',ev=>{
   const c=CHAPTERS[current];if(!c.video)return;
   opener=ev.currentTarget;
-  $('#video-title').textContent=`Démo vidéo · ${c.name}`;
+  $('#video-title').textContent=`Présentation vidéo · ${c.name}`;
   const video=element('video');
   Object.assign(video,{src:c.video.src,poster:c.video.poster,controls:true,playsInline:true,preload:'metadata'});
   videoFrame.replaceChildren(video);

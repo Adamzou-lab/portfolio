@@ -18,7 +18,10 @@ export const PROJECTS = [
       system: 'Une boucle modèle–outils construit le plan. Les actions proposées sont enregistrées, soumises à validation, puis exécutées avec leurs traces.',
       limits: 'GitHub est l’intégration externe documentée. Les fonctions email et calendrier préparent des fichiers, sans envoi réel. Le POC reste limité à un opérateur.',
       tags: ['Planification', 'Outils', 'Validation', 'Traces'],
-      links: [{kind: 'code', url: 'https://github.com/Souf-F/holberton-hackathonagentic', label: 'Voir le code'}],
+      links: [
+        {kind: 'demo', url: 'https://pennyworth.adamzou.fr', label: 'Ouvrir Pennyworth'},
+        {kind: 'code', url: 'https://github.com/Souf-F/holberton-hackathonagentic', label: 'Voir le code'},
+      ],
     },
   },
   {
@@ -71,6 +74,7 @@ export const PROJECTS = [
     steps: ['Identifier le produit', 'Interroger les outils MCP', 'Comparer les disponibilités'],
     review: 'Une réponse sur le stock', copy: 'Les données produit et les stocks par branche alimentent la réponse.',
     action: 'Voir le fonctionnement',
+    video: {src: 'assets/videos/hbntory.mp4', poster: 'assets/videos/hbntory.webp', duration: 37},
     dossier: {
       eyebrow: 'Agents IA · Outils MCP · Stocks', type: 'Projet en équipe · Holberton',
       title: ['Une question produit.', 'Des données à consulter.'],
@@ -90,6 +94,7 @@ export const PROJECTS = [
     steps: ['Classer les messages', 'Signaler les suspicions', 'Respecter les corrections'],
     review: 'Actions sous contrôle', copy: 'Simuler avant d’agir, puis garder un journal et pouvoir annuler.',
     action: 'Voir les garde-fous',
+    video: {src: 'assets/videos/maili.mp4', poster: 'assets/videos/maili.webp', duration: 37},
     dossier: {
       eyebrow: 'Automatisation locale · Courrier', type: 'Application personnelle',
       title: ['Moins de tri répétitif.', 'La main sur son courrier.'],
