@@ -32,6 +32,13 @@ for name in files:
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(SOURCE / name, target)
 
+# Safari a resservi un module importé d’une version précédente malgré `no-store` :
+# chaque version charge ses scripts et styles sous une adresse qui lui est propre.
+traversee_js = site / 'js/traversee.js'
+module_import = "from './traversee-projects.js'"
+assert module_import in traversee_js.read_text()
+traversee_js.write_text(traversee_js.read_text().replace(module_import, f"from './traversee-projects.js?v={release}'"))
+
 for original, published in [('traversee.html', 'index.html'), ('about.html', 'about.html'), ('contact.html', 'contact.html')]:
     html = (SOURCE / original).read_text()
     html = html.replace('<a href="index.html">Version Atelier</a>', '')
@@ -41,6 +48,7 @@ for original, published in [('traversee.html', 'index.html'), ('about.html', 'ab
     html = html.replace('about.html?vue=traversee', '/about.html').replace('contact.html?vue=traversee', '/contact.html')
     html = html.replace('href="about.html"', 'href="/about.html"').replace('href="contact.html"', 'href="/contact.html"')
     html = html.replace('<title>adam. — Traversée</title>', '<title>Adam Zouaoui · Orchestration d’agents IA</title>')
+    html = re.sub(r'((?:src|href)=")((?:js|css)/[^"?]+)(?:\?[^"]*)?"', rf'\g<1>\g<2>?v={release}"', html)
     # Les anciennes pages HTML étaient conservées longtemps dans certains navigateurs.
     # Les liens versionnés chargent la bonne version ; les URL canoniques restent propres.
     def version_page(match):
