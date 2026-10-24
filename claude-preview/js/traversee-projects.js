@@ -4,7 +4,7 @@ export const PROJECTS = [
   {
     id: 'pennyworth', name: 'Pennyworth',
     subtitle: 'Planifier. Faire valider. Agir.',
-    request: 'Préparer un onboarding', placeholder: 'Décrivez votre intention…',
+    request: 'Préparer un onboarding', placeholder: 'Votre intention…',
     plan: 'Plan proposé',
     steps: ['Organiser les étapes', 'Préparer les actions', 'Demander une validation'],
     review: 'À vous de décider', copy: 'Le plan est prêt à être examiné et ajusté.',
@@ -27,7 +27,7 @@ export const PROJECTS = [
   {
     id: 'lockin', name: 'Lockin',
     subtitle: 'Rechercher. Lire. Garder un cadre.',
-    request: 'Définir une veille', placeholder: 'Quelle question explorer ?',
+    request: 'Définir une veille', placeholder: 'Votre question…',
     plan: 'Recherche encadrée',
     steps: ['Rechercher des sources', 'Lire les extraits', 'Conserver les résultats'],
     review: 'Des sources à examiner', copy: 'Le journal permet de suivre les étapes de la recherche.',
@@ -50,7 +50,7 @@ export const PROJECTS = [
   {
     id: 'peercheck', name: 'PeerCheck',
     subtitle: 'Lire. Noter. Faire progresser.',
-    request: 'Exercice AI-IDE', placeholder: 'github.com/toi/ton-projet',
+    request: 'Exercice AI-IDE', placeholder: 'github.com/toi/…',
     plan: 'Passage à la grille',
     steps: ['Lire le dépôt', 'Contrôler le périmètre', 'Passer à la grille'],
     review: 'Une note critère par critère', copy: 'Chaque critère vaut 0, 2 ou 4 points. La revue s’écrit en direct et reste à examiner.',
@@ -69,7 +69,7 @@ export const PROJECTS = [
   {
     id: 'hbntory', name: 'Hbntory',
     subtitle: 'Suivre. Agir. Tracer.',
-    request: 'Réapprovisionner', placeholder: 'Réassort à Marseille…',
+    request: 'Réapprovisionner', placeholder: '10 routeurs…',
     plan: 'Mouvement de stock',
     steps: ['Repérer le stock faible', 'Ajouter, retirer ou transférer', 'Historiser le mouvement'],
     review: 'Un stock à jour et tracé', copy: 'Chaque mouvement garde son auteur et sa date ; l’assistant consulte le stock sans le modifier.',
@@ -80,7 +80,7 @@ export const PROJECTS = [
       title: ['Plusieurs magasins.', 'Un stock sous contrôle.'],
       need: 'Suivre le stock de plusieurs magasins au même endroit : repérer les ruptures et les stocks faibles, puis agir sans perdre la trace de qui a fait quoi.',
       role: 'Interface du backoffice (thème, tableau de bord de l’administrateur, disponibilité entre magasins, correctifs de sécurité), client web, mise en place du service IA et intégration. Nico a construit les fondations du backoffice et de la base de données ; Erwan a développé le serveur MCP et les agents IA.',
-      system: 'Chaque employé gère le stock de son seul magasin : ajout, retrait, transfert vers un autre magasin. La fiche produit montre la disponibilité ailleurs pour décider d’un transfert, et chaque mouvement est historisé. L’administrateur suit tous les magasins en lecture seule, avec les lignes sous un seuil de stock faible qu’il règle lui-même. En soutien, un assistant IA répond aux questions du public en consultant le stock en lecture seule, via un serveur MCP.',
+      system: 'Chaque employé gère le stock de son magasin : ajout, retrait, transfert. Chaque mouvement est historisé, et l’administrateur suit tous les magasins en lecture seule, avec des alertes de stock faible. En soutien, un assistant IA répond aux questions du public en lecture seule, via un serveur MCP.',
       limits: 'Projet d’école, sans version en ligne. Les fiches produit viennent d’une API fournie par l’école ; rien n’est copié en base. Les prévisions de rupture restent indicatives, et l’assistant ne modifie jamais le stock.',
       tags: ['Client web', 'PydanticAI', 'MCP', 'Intégration'],
       links: [{kind: 'code', url: 'https://github.com/Adamzou-lab/holbertonschool-hbntory', label: 'Voir le code'}],
@@ -89,7 +89,7 @@ export const PROJECTS = [
   {
     id: 'maili', name: 'Maili',
     subtitle: 'Synchroniser. Trier. Garder le contrôle.',
-    request: 'Courrier non lu', placeholder: 'Facture, newsletter, promotion…',
+    request: 'Courrier non lu', placeholder: 'Facture, promo…',
     plan: 'Tri par règles',
     steps: ['Classer les messages', 'Signaler les suspicions', 'Respecter les corrections'],
     review: 'Actions sous contrôle', copy: 'Simuler avant d’agir, puis garder un journal et pouvoir annuler.',
