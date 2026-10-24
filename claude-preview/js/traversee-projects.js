@@ -9,6 +9,7 @@ export const PROJECTS = [
     steps: ['Organiser les étapes', 'Préparer les actions', 'Demander une validation'],
     review: 'À vous de décider', copy: 'Le plan est prêt à être examiné et ajusté.',
     action: 'Examiner le plan',
+    video: {src: 'assets/videos/pennyworth.mp4', poster: 'assets/videos/pennyworth.webp', duration: 34},
     dossier: {
       eyebrow: 'Orchestration · Validation humaine', type: 'POC en équipe',
       title: ['Un agent propose.', 'Une personne décide.'],
@@ -28,6 +29,7 @@ export const PROJECTS = [
     steps: ['Rechercher des sources', 'Lire les extraits', 'Conserver les résultats'],
     review: 'Des sources à examiner', copy: 'Le journal permet de suivre les étapes de la recherche.',
     action: 'Voir le fonctionnement',
+    video: {src: 'assets/videos/lockin.mp4', poster: 'assets/videos/lockin.webp', duration: 36},
     dossier: {
       eyebrow: 'Veille agentique · Sources & budgets', type: 'POC en équipe',
       title: ['Explorer des sources.', 'Garder un cadre.'],

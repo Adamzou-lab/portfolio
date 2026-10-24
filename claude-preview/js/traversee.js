@@ -76,6 +76,9 @@ function paint(index){
   $('[data-review-title]').textContent=c.review;
   $('[data-review-copy]').textContent=c.copy;
   $('.review-button span').textContent=c.action;
+  // Le bouton de démo vidéo n’apparaît que pour les projets qui ont un film.
+  const video=$('[data-open-video]');video.hidden=!c.video;
+  if(c.video){video.querySelector('.video-label').textContent=`Démo vidéo · ${c.video.duration} s`;video.setAttribute('aria-label',`Démo vidéo de ${c.name}, ${c.video.duration} secondes`);}
   $('.demo-feedback').textContent='';
   stage.dataset.chapter=c.id;
   stage.setAttribute('aria-labelledby',tabs[index].id);
@@ -146,16 +149,39 @@ function renderDossier(project){
 }
 function closeDossier(){dialog.close();opener?.focus({preventScroll:true});}
 // La barre du dossier reste fixe ; son fond n’apparaît qu’une fois le contenu défilé.
-const toolbar=$('.dialog-toolbar');
+const toolbar=dialog.querySelector('.dialog-toolbar');
 dialog.addEventListener('scroll',()=>toolbar.classList.toggle('is-scrolled',dialog.scrollTop>4),{passive:true});
+const outside=(d,ev)=>{const r=d.getBoundingClientRect();return ev.target===d&&(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom);};
 document.querySelectorAll('[data-open-dossier]').forEach(button=>button.addEventListener('click',()=>{
   opener=button;
   renderDossier(CHAPTERS[current]);
   dialog.showModal();dialog.scrollTop=0;toolbar.classList.remove('is-scrolled');
   animate(dialog,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{duration:350,easing:'ease-out'});
 }));
-$('.dialog-close').addEventListener('click',closeDossier);
-dialog.addEventListener('click',ev=>{if(ev.target===dialog){const r=dialog.getBoundingClientRect();if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom)closeDossier();}});
+dialog.querySelector('.dialog-close').addEventListener('click',closeDossier);
+dialog.addEventListener('click',ev=>{if(outside(dialog,ev))closeDossier();});
+
+// Le film n’est chargé qu’à l’ouverture, puis retiré à la fermeture pour couper lecture et téléchargement.
+const videoDialog=$('.video-dialog'), videoFrame=$('.video-frame');
+$('[data-open-video]').addEventListener('click',ev=>{
+  const c=CHAPTERS[current];if(!c.video)return;
+  opener=ev.currentTarget;
+  $('#video-title').textContent=`Démo vidéo · ${c.name}`;
+  const video=element('video');
+  Object.assign(video,{src:c.video.src,poster:c.video.poster,controls:true,playsInline:true,preload:'metadata'});
+  videoFrame.replaceChildren(video);
+  videoDialog.showModal();
+  animate(videoDialog,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{duration:350,easing:'ease-out'});
+  // Le clic vaut accord pour le son ; en mouvements réduits, le film attend la lecture.
+  if(!reduced())video.play().catch(()=>{});
+});
+videoDialog.addEventListener('close',()=>{
+  const video=videoFrame.querySelector('video');
+  if(video){video.pause();video.removeAttribute('src');video.load();}
+  videoFrame.replaceChildren();opener?.focus({preventScroll:true});
+});
+videoDialog.querySelector('.dialog-close').addEventListener('click',()=>videoDialog.close());
+videoDialog.addEventListener('click',ev=>{if(outside(videoDialog,ev))videoDialog.close();});
 
 function syncIntro(){
   const playing=busyIntro();portfolio.inert=playing;

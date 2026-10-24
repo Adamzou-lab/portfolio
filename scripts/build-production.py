@@ -25,7 +25,7 @@ files = [
     'assets/traversee-background-v2.webp',
     'assets/documents/CV_ADAM_ZOUAOUI.pdf', 'assets/documents/CV_ADAM_ZOUAOUI.webp',
 ]
-files += [str(p.relative_to(SOURCE)) for directory in ('assets/fonts', 'assets/icons')
+files += [str(p.relative_to(SOURCE)) for directory in ('assets/fonts', 'assets/icons', 'assets/videos')
           for p in sorted((SOURCE / directory).iterdir()) if p.is_file() and not p.name.startswith('.')]
 for name in files:
     target = site / name

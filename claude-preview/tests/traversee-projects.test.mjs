@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {existsSync} from 'node:fs';
 import {PROJECTS} from '../js/traversee-projects.js';
 
 // Contrat éditorial : détecte une fiche incomplète avant son intégration.
@@ -39,5 +40,16 @@ test('chaque dossier documente le rôle et les limites, avec des liens publics f
       }
       assert.ok(d.links.filter(link => link.kind === 'demo').length <= 1, `${id} : une seule démo`);
     }
+  }
+});
+
+test('chaque démo vidéo facultative pointe vers des fichiers publiés et affiche sa durée', () => {
+  for (const {id,video} of PROJECTS) {
+    if (video === undefined) continue;
+    for (const field of ['src','poster']) {
+      assert.match(video[field] ?? '', /^assets\/videos\/[a-z0-9-]+\.(mp4|webp)$/, `${id}.video.${field}`);
+      assert.ok(existsSync(new URL('../' + video[field], import.meta.url)), `${id}.video.${field} introuvable`);
+    }
+    assert.ok(Number.isInteger(video.duration) && video.duration > 0, `${id}.video.duration en secondes`);
   }
 });

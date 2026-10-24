@@ -8,8 +8,9 @@ Chaque projet conserve le même parcours animé : intention → étapes → rés
 2. Décrire un cas concret en trois panneaux. Garder des titres courts et environ trois étapes lisibles ; les étapes sont rendues depuis le tableau `steps`.
 3. Copier une fiche existante dans `PROJECTS`, choisir un `id` unique et stable (minuscules, chiffres, tirets). L’ordre du tableau détermine les numéros et la navigation. Un lien direct devient `traversee.html#mon-projet`.
 4. Remplir le dossier : besoin, rôle, fonctionnement, périmètre, technologies. `links` liste la démo publique vérifiée (`kind: 'demo'`, une au plus) et le dépôt public (`kind: 'code'`), s’ils existent ; ils remplacent les technologies en bas du dossier. La démo rend aussi le grand titre du projet cliquable. Omettre `links` pour un projet privé ou sans lien public vérifié. Ne mettre aucun secret, courrier réel ou donnée personnelle dans les exemples.
-5. Exécuter `node --test claude-preview/tests/traversee-projects.test.mjs` depuis la racine du prototype.
-6. Vérifier dans le navigateur : entrée depuis l’intro, changement rapide de projet, animation du parcours, dossier, lien direct et retour arrière. Tester aussi à 820 et 390 px, ainsi qu’avec `?reduit=1`. Le clavier utilise les flèches, Début et Fin. L’onglet sélectionné doit rester visible dans le rail mobile.
+5. Facultatif, si le projet a un film validé par Adam : copier le MP4 (H.264, `moov` en tête) et sa miniature convertie en WebP dans `assets/videos/` sous le nom de l’`id`, puis renseigner `video` avec la durée en secondes. Le bouton « Démo vidéo · N s » apparaît à côté de « Voir le POC » ; le film n’est chargé qu’à l’ouverture du lecteur. Le script de mise en ligne publie tout le dossier `assets/videos/`.
+6. Exécuter `node --test claude-preview/tests/traversee-projects.test.mjs` depuis la racine du prototype.
+7. Vérifier dans le navigateur : entrée depuis l’intro, changement rapide de projet, animation du parcours, dossier, lien direct et retour arrière. Tester aussi à 820 et 390 px, ainsi qu’avec `?reduit=1`. Le clavier utilise les flèches, Début et Fin. L’onglet sélectionné doit rester visible dans le rail mobile.
 
 ## Fiche à copier
 
@@ -22,6 +23,8 @@ Chaque projet conserve le même parcours animé : intention → étapes → rés
   steps: ['Première étape', 'Deuxième étape', 'Troisième étape'],
   review: 'Le résultat', copy: 'Ce que le visiteur obtient ou contrôle.',
   action: 'Voir le fonctionnement',
+  // Seulement pour un film validé :
+  // video: {src: 'assets/videos/mon-projet.mp4', poster: 'assets/videos/mon-projet.webp', duration: 34},
   dossier: {
     eyebrow: 'Domaine · Particularité', type: 'Projet personnel',
     title: ['Une première ligne.', 'Une seconde ligne.'],
