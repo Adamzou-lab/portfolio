@@ -155,7 +155,7 @@ const outside=(d,ev)=>{const r=d.getBoundingClientRect();return ev.target===d&&(
 document.querySelectorAll('[data-open-dossier]').forEach(button=>button.addEventListener('click',()=>{
   opener=button;
   renderDossier(CHAPTERS[current]);
-  dialog.showModal();dialog.scrollTop=0;toolbar.classList.remove('is-scrolled');
+  dialog.showModal();dialog.focus({preventScroll:true});dialog.scrollTop=0;toolbar.classList.remove('is-scrolled');
   animate(dialog,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{duration:350,easing:'ease-out'});
 }));
 dialog.querySelector('.dialog-close').addEventListener('click',closeDossier);
@@ -170,7 +170,7 @@ $('[data-open-video]').addEventListener('click',ev=>{
   const video=element('video');
   Object.assign(video,{src:c.video.src,poster:c.video.poster,controls:true,playsInline:true,preload:'metadata'});
   videoFrame.replaceChildren(video);
-  videoDialog.showModal();
+  videoDialog.showModal();videoDialog.focus({preventScroll:true});
   animate(videoDialog,[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{duration:350,easing:'ease-out'});
   // Le clic vaut accord pour le son ; en mouvements réduits, le film attend la lecture.
   if(!reduced())video.play().catch(()=>{});
