@@ -1,4 +1,4 @@
-// Repris du prototype ~/mains-ascii (version validée par Adam le 28/10/2026), sous l'espace de noms IntroAscii.
+// Repris du prototype ~/mains-ascii (version validée par Adam le 28/10/2026 : mosaïque, coloriage et squelette dessinés par lui), sous l'espace de noms IntroAscii.
 // Préparation, faite une fois : l'image de chaque main (avec son bord supérieur lissé), son maillage
 // articulé, et les tables de caractères. Les caractères eux-mêmes sont choisis à chaque image, dans la carte
 // graphique (js/gl.js), à partir de la main en mouvement : comme pour les koïs, la grille reste fixe à
@@ -193,16 +193,138 @@
     return [bas, Math.max(haut, bas + 0.1)];
   }
 
-  // Maillage dans l'image source : un carré tous les `pas` pixels là où la main se trouve. Chaque carré
-  // appartient à la pièce qui contient son centre, et ses sommets suivent cette pièce et son parent (poids
-  // qui passe en douceur de l'un à l'autre autour de l'articulation). Triangles rangés du fond vers le devant.
-  function maillage(canvas, cadre, rig, pas = 8) {
+  // Étiquettes du coloriage (outils/doigts.html) : une couleur pleine par doigt, dans cet ordre (1 à 7).
+  const DOIGTS_COLORIES = {
+    '230,25,75': 'pouce', '60,180,75': 'index', '67,99,216': 'majeur', '245,130,49': 'annulaire',
+    '145,30,180': 'auriculaire', '70,200,220': 'paume', '128,128,0': 'poignet',
+  };
+  const NOMS_ETIQUETTES = ['', 'pouce', 'index', 'majeur', 'annulaire', 'auriculaire', 'paume', 'poignet'];
+  const etiquetteDe = (p) => p.etiquette || p.doigt;
+
+  // Le doigt de chaque pixel de l'image (0 : aucun), d'après le coloriage. Les pixels de la main restés sans
+  // couleur (reflets trop clairs, bord comblé) prennent le doigt peint le plus proche, de proche en proche.
+  function lireEtiquettes(coloriage, image) {
+    const W = image.width, H = image.height;
+    const c = document.createElement('canvas');
+    c.width = W;
+    c.height = H;
+    const x = c.getContext('2d', { willReadFrequently: true });
+    x.drawImage(coloriage, 0, 0, W, H);
+    const col = x.getImageData(0, 0, W, H).data;
+    const alpha = image.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, W, H).data;
+    const e = new Uint8Array(W * H), file = new Int32Array(W * H);
+    let debut = 0, fin = 0;
+    // Couleur (entier 0xRRGGBB) vers numéro de doigt : pas de texte par pixel, WebKit y passait 200 ms.
+    const parCouleur = new Map(Object.entries(DOIGTS_COLORIES).map(([k, nom]) => {
+      const [r, g, b2] = k.split(',').map(Number);
+      return [(r << 16) | (g << 8) | b2, NOMS_ETIQUETTES.indexOf(nom)];
+    }));
+    for (let i = 0; i < W * H; i++) {
+      if (col[4 * i + 3] < 128) continue;
+      const k = parCouleur.get((col[4 * i] << 16) | (col[4 * i + 1] << 8) | col[4 * i + 2]);
+      if (!k) continue;
+      e[i] = k;
+      file[fin++] = i;
+    }
+    const etendreA = (i, q) => {
+      if (e[q] || alpha[4 * q + 3] <= 8) return;
+      e[q] = e[i];
+      file[fin++] = q;
+    };
+    while (debut < fin) {
+      const i = file[debut++], px = i % W;
+      if (px + 1 < W) etendreA(i, i + 1);
+      if (px > 0) etendreA(i, i - 1);
+      if (i + W < W * H) etendreA(i, i + W);
+      if (i >= W) etendreA(i, i - W);
+    }
+    // Le doigt voisin le plus proche à moins de DEBORD pixels : chaque doigt déborde d'autant sous ses
+    // voisins. Quand un doigt s'écarte de celui de derrière, le débord comble le vide que l'image ne montre pas
+    // (elle ne contient rien sous un doigt).
+    const DEBORD = 6, voisin = new Uint8Array(W * H);
+    // Les doigts présents dans le carré de 13 × 13 pixels autour de chaque pixel, un bit par doigt : deux
+    // passes de fenêtre glissante (un compte par doigt), puis seuls les pixels qui ont un autre doigt dans ce
+    // carré cherchent leur voisin, du plus près au plus loin, et s'arrêtent au premier trouvé. Même résultat
+    // qu'une recherche complète ; WebKit y passait plus d'une demi-seconde.
+    const NB = NOMS_ETIQUETTES.length, compte = new Int32Array(NB);
+    const glisser = (src, dst, n, l, pas, ligne) => {
+      for (let j = 0; j < n; j++) {
+        const o = j * ligne;
+        compte.fill(0);
+        let masque = 0;
+        const ajouter = (v, s) => {
+          if (!v) return;
+          compte[v] += s;
+          if (compte[v]) masque |= 1 << v;
+          else masque &= ~(1 << v);
+        };
+        for (let k = 0; k <= Math.min(l - 1, DEBORD); k++) ajouter(src(o + k * pas), 1);
+        for (let k = 0; k < l; k++) {
+          dst[o + k * pas] = masque;
+          if (k + DEBORD + 1 < l) ajouter(src(o + (k + DEBORD + 1) * pas), 1);
+          if (k - DEBORD >= 0) ajouter(src(o + (k - DEBORD) * pas), -1);
+        }
+      }
+    };
+    // Première passe sur les numéros de doigt (un seul par pixel), seconde sur les masques des lignes.
+    const lignes = new Uint8Array(W * H), autour = new Uint8Array(W * H);
+    glisser((i) => e[i], lignes, H, W, 1, W);
+    for (let x0 = 0; x0 < W; x0++) {
+      let masque = 0;
+      const somme = new Int32Array(NB);
+      const ajouterM = (m, s) => {
+        for (let v = 1; v < NB; v++) if (m & (1 << v)) {
+          somme[v] += s;
+          if (somme[v]) masque |= 1 << v;
+          else masque &= ~(1 << v);
+        }
+      };
+      for (let k = 0; k <= Math.min(H - 1, DEBORD); k++) ajouterM(lignes[k * W + x0], 1);
+      for (let y = 0; y < H; y++) {
+        autour[y * W + x0] = masque;
+        if (y + DEBORD + 1 < H) ajouterM(lignes[(y + DEBORD + 1) * W + x0], 1);
+        if (y - DEBORD >= 0) ajouterM(lignes[(y - DEBORD) * W + x0], -1);
+      }
+    }
+    // Décalages du disque de rayon DEBORD, du plus près au plus loin (à distance égale, dans l'ordre de lecture).
+    const decalages = [];
+    for (let dy = -DEBORD; dy <= DEBORD; dy++)
+      for (let dx = -DEBORD; dx <= DEBORD; dx++) if (dx * dx + dy * dy <= DEBORD * DEBORD) decalages.push([dx, dy, dx * dx + dy * dy]);
+    decalages.sort((a, b) => a[2] - b[2]);
+    for (let y = 0; y < H; y++)
+      for (let x0 = 0; x0 < W; x0++) {
+        const i = y * W + x0;
+        if (!e[i] || !(autour[i] & ~(1 << e[i]))) continue;
+        for (const [dx, dy] of decalages) {
+          const qx = x0 + dx, qy = y + dy;
+          if (qx < 0 || qy < 0 || qx >= W || qy >= H) continue;
+          const v = e[qy * W + qx];
+          if (v && v !== e[i]) {
+            voisin[i] = v;
+            break;
+          }
+        }
+      }
+    // Texture pour la carte graphique : le doigt dans le rouge, le doigt voisin dans le vert.
+    const im = x.createImageData(W, H);
+    for (let i = 0; i < W * H; i++) (im.data[4 * i] = e[i]), (im.data[4 * i + 1] = voisin[i]), (im.data[4 * i + 3] = 255);
+    x.putImageData(im, 0, 0);
+    return { e, voisin, texture: c };
+  }
+
+  // Maillage dans l'image source : un carré tous les `pas` pixels là où la main se trouve. Sans coloriage,
+  // chaque carré appartient à la pièce qui contient son centre. Avec le coloriage, un carré est émis une fois
+  // pour chaque doigt présent sous lui, et la carte graphique n'en dessine que les pixels de ce doigt : un
+  // carré à cheval sur deux doigts ne peut plus emporter un morceau du voisin. Les sommets suivent la pièce et
+  // son parent (poids qui passe en douceur de l'un à l'autre autour de l'articulation). Triangles rangés du
+  // fond vers le devant.
+  function maillage(canvas, cadre, rig, pas = 8, etiquettes = null, voisins = null) {
     const W = canvas.width, H = canvas.height;
     const d = canvas.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, W, H).data;
     const nx = Math.ceil(W / pas) + 1, ny = Math.ceil(H / pas) + 1;
     const plein = (x, y) => x >= 0 && y >= 0 && x < W && y < H && d[4 * (y * W + x) + 3] > 8;
     const bras = rig.pieces.find((q) => q.nom === 'bras');
-    const sommets = [], uv = [], os = [], poids = [], deja = new Map();
+    const sommets = [], uv = [], os = [], poids = [], etiq = [], deja = new Map();
     const parPiece = new Map(rig.ordre.map((n) => [n, []]));
     const sommet = (i, j, p) => {
       const cle = (j * nx + i) * 32 + rig.pieces.indexOf(p);
@@ -213,36 +335,74 @@
       const [b1, b2, w1] = window.IntroAscii.poidsOs(rig, sx, sy, p);
       os.push(b1, b2);
       poids.push(w1);
+      etiq.push(etiquettes ? NOMS_ETIQUETTES.indexOf(etiquetteDe(p)) : 0);
       deja.set(cle, sommets.length / 2 - 1);
       return sommets.length / 2 - 1;
+    };
+    // Dans un même doigt, la phalange : la même règle que sans coloriage (la première de la liste dont la
+    // capsule, élargie de 6 px, contient le centre du carré : le bout avant la phalange qu'il recouvre), sinon la
+    // plus proche. La phalange enfant garde ainsi les carrés de part et d'autre de son articulation, et le pli
+    // reste continu.
+    const phalange = (nom, cx, cy) => {
+      const choix = rig.pieces.filter((p) => etiquetteDe(p) === nom);
+      if (choix.length <= 1) return choix[0];
+      let mieux = choix[0], ecart = Infinity;
+      for (const p of choix) {
+        const m = p.masque;
+        if (!m || m.type !== 'capsule') continue;
+        const dx = m.b[0] - m.a[0], dy = m.b[1] - m.a[1];
+        const t = Math.max(0, Math.min(1, ((cx - m.a[0]) * dx + (cy - m.a[1]) * dy) / (dx * dx + dy * dy || 1)));
+        const dist = Math.hypot(cx - m.a[0] - dx * t, cy - m.a[1] - dy * t) - m.r - 6;
+        if (dist <= 0) return p;
+        if (dist < ecart) (ecart = dist), (mieux = p);
+      }
+      return mieux;
+    };
+    const emettre = (i, j, p) => {
+      const a = sommet(i, j, p), b = sommet(i + 1, j, p), c = sommet(i, j + 1, p), e = sommet(i + 1, j + 1, p);
+      (parPiece.get(p.nom) || parPiece.get('bras')).push(a, b, c, b, e, c);
     };
     for (let j = 0; j < ny - 1; j++)
       for (let i = 0; i < nx - 1; i++) {
         let utile = false;
-        for (let y = j * pas - 2; y <= (j + 1) * pas + 2 && !utile; y += 2)
-          for (let x = i * pas - 2; x <= (i + 1) * pas + 2 && !utile; x += 2) if (plein(x, y)) utile = true;
+        // Les doigts présents sous le carré, un bit par doigt.
+        let presents = 0;
+        for (let y = j * pas - 2; y <= (j + 1) * pas + 2; y++)
+          for (let x = i * pas - 2; x <= (i + 1) * pas + 2; x++) {
+            if (!plein(x, y)) continue;
+            utile = true;
+            if (!etiquettes) break;
+            presents |= (1 << etiquettes[y * W + x]) | (voisins ? 1 << voisins[y * W + x] : 0);
+          }
+        presents &= ~1; // le bit 0 : pas de doigt
         if (!utile) continue;
         const cx = cadre.x + (i + 0.5) * pas, cy = cadre.y + (j + 0.5) * pas;
-        const p = window.IntroAscii.pieceDe(rig, cx, cy, 6, 16) || bras;
-        const a = sommet(i, j, p), b = sommet(i + 1, j, p), c = sommet(i, j + 1, p), e = sommet(i + 1, j + 1, p);
-        (parPiece.get(p.nom) || parPiece.get('bras')).push(a, b, c, b, e, c);
+        if (!etiquettes || !presents) {
+          emettre(i, j, window.IntroAscii.pieceDe(rig, cx, cy, 6, 16) || bras);
+          continue;
+        }
+        for (let k = 1; k < NOMS_ETIQUETTES.length; k++) if (presents & (1 << k)) emettre(i, j, phalange(NOMS_ETIQUETTES[k], cx, cy) || bras);
       }
     return {
       sommets: new Float32Array(sommets),
       uv: new Float32Array(uv),
       os: new Float32Array(os),
       poids: new Float32Array(poids),
+      etiq: new Float32Array(etiq),
       triangles: new Uint16Array([...parPiece.values()].flat()),
     };
   }
 
   class MainPreparee {
-    constructor(main, img, cadre) {
+    // coloriage : l'image du coloriage des doigts (facultatif).
+    constructor(main, img, cadre, coloriage = null) {
       this.main = main;
       this.cadre = cadre;
       this.image = imageMain(img, cadre, main.rig);
       this.contraste = contraste(this.image);
-      this.maillage = maillage(this.image, cadre, main.rig);
+      const etiq = coloriage ? lireEtiquettes(coloriage, this.image) : null;
+      this.etiquettes = etiq ? etiq.texture : null;
+      this.maillage = maillage(this.image, cadre, main.rig, 8, etiq ? etiq.e : null, etiq ? etiq.voisin : null);
     }
   }
 

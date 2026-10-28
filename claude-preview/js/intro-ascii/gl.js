@@ -1,4 +1,4 @@
-// Repris du prototype ~/mains-ascii (version validée par Adam le 28/10/2026), sous l'espace de noms IntroAscii.
+// Repris du prototype ~/mains-ascii (version validée par Adam le 28/10/2026 : mosaïque, coloriage et squelette dessinés par lui), sous l'espace de noms IntroAscii.
 // Rendu en WebGL, en trois passes à chaque image, sur le principe des koïs : la grille de caractères est fixe
 // à l'écran et chaque case choisit son caractère d'après ce qui passe dessous.
 //   1. Les mains : chaque maillage, déformé par ses os, est dessiné dans une texture de 4 × 6 échantillons
@@ -9,37 +9,65 @@
 //      case à la limite entre deux caractères ne clignote plus quand la main respire.
 //   3. L'écran : papier sous la main, caractère par-dessus.
 (function () {
-  const MAX_OS = 16;
+  const MAX_OS = 32; // pièces par main au plus (17 pour la main humaine dessinée par Adam)
   const MAX_GLYPHES = 48;
   const PAPIER = [244 / 255, 244 / 255, 242 / 255];
   const ENCRE = [11 / 255, 11 / 255, 11 / 255];
+  // Encres colorées, discrètes pour rester dans le monochrome de Traversée : graphite bleuté pour le robot,
+  // sépia pour l'humain, leurs nuances claires pour le dégradé, et une lueur chaude près de la lumière.
+  const rvb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
+  const COULEURS = {
+    robot: rvb('#1f3045'),
+    robotClair: rvb('#41566f'),
+    humain: rvb('#4a2f1f'),
+    humainClair: rvb('#7d5539'),
+    lueur: rvb('#c27a2c'),
+    // Mosaïque : tuiles en vraies couleurs, de la plus sombre à la plus claire, puis la couleur du reflet.
+    // Retours d'Adam : le robot en métal gris et noir, la peau à peine teintée, et une lueur blanche, comme
+    // la lumière de l'intro.
+    rampeRobot: ['#121314', '#4b4f55', '#b3b8bf', '#f5f7fa'].map(rvb),
+    rampeHumain: ['#2f2925', '#786a62', '#cfc5be', '#f6f2ee'].map(rvb),
+    lueurTuile: rvb('#fbfaf7'),
+  };
 
   const SOMMETS_MAIN = `
     attribute vec2 a_src;
     attribute vec2 a_uv;
     attribute vec2 a_os;
     attribute float a_poids;
+    attribute float a_etiquette;
     uniform mat3 u_os[${MAX_OS}];
     uniform mat3 u_pose;
     uniform vec2 u_taille;
     uniform float u_sens;
     varying vec2 v_uv;
+    varying float v_etiquette;
     void main() {
       mat3 m = u_os[int(a_os.x)] * a_poids + u_os[int(a_os.y)] * (1.0 - a_poids);
       vec3 p = u_pose * (m * vec3(a_src, 1.0));
       vec2 clip = p.xy / u_taille * 2.0 - 1.0;
       gl_Position = vec4(clip.x, clip.y * u_sens, 0.0, 1.0);
       v_uv = a_uv;
+      v_etiquette = a_etiquette;
     }`;
 
   // Passe 1 : noirceur et couverture (prémultipliées), main dans le bleu. En vue de réglage, l'image telle quelle.
+  // Avec un coloriage des doigts, un carré ne dessine que les pixels de son doigt.
   const FRAGMENTS_MAIN = `
     precision mediump float;
     uniform sampler2D u_tex;
+    uniform sampler2D u_etiquettes;
+    uniform float u_avecEtiquettes;
     uniform float u_main;
     uniform float u_direct;
     varying vec2 v_uv;
+    varying float v_etiquette;
     void main() {
+      if (u_avecEtiquettes > 0.5) {
+        // Le pixel appartient à ce doigt, ou à son débord de quelques pixels sous un voisin.
+        vec2 e = floor(texture2D(u_etiquettes, v_uv).rg * 255.0 + 0.5);
+        if (abs(e.x - v_etiquette) > 0.5 && abs(e.y - v_etiquette) > 0.5) discard;
+      }
       vec4 c = texture2D(u_tex, v_uv);
       if (u_direct > 0.5) { gl_FragColor = c; return; }
       float a = c.a;
@@ -109,7 +137,7 @@
         if (ax < sH * ay) k = (gy > 0.0 ? 1.0 - c : c) > sB ? 4.0 : 0.0;
         else if (ay < sV * ax) k = 1.0;
         else k = gx * gy > 0.0 ? 2.0 : 3.0;
-        gl_FragColor = vec4((u_bords + k) / 255.0, 0.92, 1.0, 1.0);
+        gl_FragColor = vec4((u_bords + k) / 255.0, 0.92, 1.0, ((robot ? 16.0 : 0.0) + 7.0) / 255.0);
         return;
       }
 
@@ -122,6 +150,12 @@
           md += m.r;
         }
       float moyen = mc > 0.02 ? clamp((md / mc - bas) / (haut - bas), 0.0, 1.0) : 0.0;
+      // Nuance de la case pour la couleur (0 foncée à 7 claire), d'après le ton alentour. Comme le caractère,
+      // elle garde sa nuance précédente tant que le ton reste près de la limite.
+      float nAvant = prec.b > 0.5 ? mod(floor(prec.a * 255.0 + 0.5), 16.0) : -1.0;
+      float nF = (1.0 - moyen) * 8.0;
+      float niveau = clamp(floor(nF), 0.0, 7.0);
+      if (nAvant >= 0.0 && nAvant < 7.5 && abs(nF - (nAvant + 0.5)) < 0.75) niveau = nAvant;
       float base = 0.18 + 0.55 * pow(moyen, 1.4);
 
       // Encre attendue dans chacun des 24 sous-carrés, et par zone de 2 × 2.
@@ -169,7 +203,8 @@
       // Inertie : le caractère précédent (ou la case vide) reste tant que son écart au meilleur est faible.
       if (errAvant - meilleur <= u_inertie * e0) { choix = iAvant; alpha = aAvant; }
       if (choix < 0.0) { gl_FragColor = vec4(0.0); return; }
-      gl_FragColor = vec4(choix / 255.0, alpha, 1.0, 1.0);
+      // Alpha de la case : main (16 pour le robot) et nuance, pour la couleur de la passe 3.
+      gl_FragColor = vec4(choix / 255.0, alpha, 1.0, ((robot ? 16.0 : 0.0) + niveau) / 255.0);
     }`;
 
   // Passe 3 : papier sous la main, caractère par-dessus.
@@ -186,6 +221,29 @@
     uniform float u_hauteurPx;
     uniform vec3 u_papier;
     uniform vec3 u_encreRvb;
+    // Couleur (?couleur=) : 0 encre unique, 1 une encre par main, 2 dégradé par nuance, 3 lueur de la lumière,
+    // 4 mosaïque (tuiles pleines colorées, caractère gravé, reflet qui glisse, lueur).
+    uniform float u_couleur;
+    uniform vec3 u_encreRobot;
+    uniform vec3 u_encreHumain;
+    uniform vec3 u_clairRobot;
+    uniform vec3 u_clairHumain;
+    uniform vec3 u_lueur;
+    uniform vec4 u_lumiere; // centre (px CSS), rayon, force
+    uniform vec3 u_rampeRobot[4]; // sombre, moyen, clair, reflet
+    uniform vec3 u_rampeHumain[4];
+    uniform vec3 u_lueurTuile;
+    uniform float u_temps;
+    uniform float u_largeur;
+
+    // Couleur de tuile d'une main pour une clarté t (0 sombre à 1 claire).
+    vec3 rampe(bool robot, float t) {
+      vec3 s = robot ? u_rampeRobot[0] : u_rampeHumain[0];
+      vec3 m = robot ? u_rampeRobot[1] : u_rampeHumain[1];
+      vec3 c = robot ? u_rampeRobot[2] : u_rampeHumain[2];
+      return t < 0.5 ? mix(s, m, t * 2.0) : mix(m, c, t * 2.0 - 1.0);
+    }
+
     void main() {
       vec2 css = vec2(gl_FragCoord.x, u_hauteurPx - gl_FragCoord.y) / u_dpr;
       vec2 cf = css / u_case;
@@ -194,12 +252,41 @@
       vec4 info = texture2D(u_cases, (cell + 0.5) / u_grille);
       float papier = 0.92 * texture2D(u_mains, css / u_tailleCss).g;
       float encre = 0.0;
+      vec3 teinte = u_encreRvb;
+      vec3 fond = u_papier * papier;
+      float fondA = papier;
       if (info.b > 0.5) {
         float idx = floor(info.r * 255.0 + 0.5);
         encre = texture2D(u_atlas, vec2((idx + loc.x) / u_nAtlas, loc.y)).a * info.g;
+        if (u_couleur > 0.5) {
+          float code = floor(info.a * 255.0 + 0.5);
+          bool robot = code > 15.5;
+          float niveau = robot ? code - 16.0 : code;
+          float d = distance(css, u_lumiere.xy) / max(u_lumiere.z, 1.0);
+          float lueur = clamp(u_lumiere.w * exp(-1.6 * d * d), 0.0, 0.9);
+          vec3 fonce = robot ? u_encreRobot : u_encreHumain;
+          teinte = fonce;
+          if (u_couleur > 1.5 && u_couleur < 2.5) teinte = mix(fonce, robot ? u_clairRobot : u_clairHumain, niveau / 7.0);
+          if (u_couleur > 2.5 && u_couleur < 3.5) teinte = mix(fonce, u_lueur, lueur);
+          if (u_couleur > 3.5) {
+            // Mosaïque, comme les koïs : une tuile pleine dont la couleur suit le ton de l'image, un reflet qui
+            // glisse le long de la main (en sens inverse pour l'autre main), la lueur près du contact ; le
+            // caractère est gravé dans la tuile, dans sa couleur assombrie.
+            vec3 tuile = rampe(robot, niveau / 7.0);
+            float x = css.x / u_largeur;
+            float passage = fract(u_temps * 0.12 + (robot ? 0.0 : 0.5));
+            float bande = exp(-pow((robot ? x : 1.0 - x) - (passage * 1.6 - 0.3), 2.0) / 0.006);
+            tuile = mix(tuile, robot ? u_rampeRobot[3] : u_rampeHumain[3], (robot ? 0.7 : 0.35) * bande);
+            tuile = mix(tuile, u_lueurTuile, lueur);
+            float dans = step(0.08, loc.x) * step(loc.x, 0.92) * step(0.06, loc.y) * step(loc.y, 0.94);
+            fond = tuile * dans + fond * (1.0 - dans);
+            fondA = dans + fondA * (1.0 - dans);
+            teinte = tuile * 0.42;
+          }
+        }
       }
-      float a = encre + papier * (1.0 - encre);
-      gl_FragColor = vec4(u_papier * papier * (1.0 - encre) + u_encreRvb * encre, a);
+      float a = encre + fondA * (1.0 - encre);
+      gl_FragColor = vec4(fond * (1.0 - encre) + teinte * encre, a);
     }`;
 
   // Matrice affine [a, b, c, d, e, f] (format du canevas) vers une mat3 WebGL, rangée par colonnes.
@@ -225,6 +312,10 @@
       this.tamponPose = new Float32Array(9);
       // Écart d'erreur toléré pour garder le caractère précédent, en part de l'encre attendue dans la case.
       this.inertie = 0.1;
+      // Couleur des caractères : 0 encre unique, 1 une encre par main, 2 dégradé, 3 lueur ; et la lumière
+      // entre les index (centre en px CSS, rayon, force de 0 à 1), mise à jour par l'intro à chaque image.
+      this.couleur = 0;
+      this.lumiere = { x: 0, y: 0, rayon: 1, force: 0 };
     }
 
     programme(vs, fs) {
@@ -298,9 +389,12 @@
         uv: tampon(m.uv),
         os: tampon(m.os),
         poids: tampon(m.poids),
+        etiq: tampon(m.etiq),
         triangles: tampon(m.triangles, gl.ELEMENT_ARRAY_BUFFER),
         n: m.triangles.length,
         tex: null,
+        // Le doigt de chaque pixel, lu sans interpolation (pas de doigt « moyen » entre deux doigts).
+        etiquettes: prep.etiquettes ? this.texture(prep.etiquettes, gl.NEAREST) : null,
       });
     }
 
@@ -364,14 +458,19 @@
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, r.tex);
       gl.uniform1i(P.u.u_tex, 0);
-      for (const [nom, b, n] of [['a_src', r.src, 2], ['a_uv', r.uv, 2], ['a_os', r.os, 2], ['a_poids', r.poids, 1]]) {
+      gl.activeTexture(gl.TEXTURE1);
+      gl.bindTexture(gl.TEXTURE_2D, r.etiquettes || r.tex);
+      gl.uniform1i(P.u.u_etiquettes, 1);
+      gl.uniform1f(P.u.u_avecEtiquettes, r.etiquettes ? 1 : 0);
+      const attributs = [['a_src', r.src, 2], ['a_uv', r.uv, 2], ['a_os', r.os, 2], ['a_poids', r.poids, 1], ['a_etiquette', r.etiq, 1]];
+      for (const [nom, b, n] of attributs) {
         gl.bindBuffer(gl.ARRAY_BUFFER, b);
         gl.enableVertexAttribArray(P.a[nom]);
         gl.vertexAttribPointer(P.a[nom], n, gl.FLOAT, false, 0, 0);
       }
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, r.triangles);
       gl.drawElements(gl.TRIANGLES, r.n, gl.UNSIGNED_SHORT, 0);
-      for (const nom of ['a_src', 'a_uv', 'a_os', 'a_poids']) gl.disableVertexAttribArray(P.a[nom]);
+      for (const [nom] of attributs) gl.disableVertexAttribArray(P.a[nom]);
     }
 
     pleinEcran(P) {
@@ -460,6 +559,19 @@
       gl.uniform1f(P3.u.u_hauteurPx, this.canvas.height);
       gl.uniform3f(P3.u.u_papier, ...PAPIER);
       gl.uniform3f(P3.u.u_encreRvb, ...ENCRE);
+      gl.uniform1f(P3.u.u_couleur, this.couleur);
+      gl.uniform3f(P3.u.u_encreRobot, ...COULEURS.robot);
+      gl.uniform3f(P3.u.u_encreHumain, ...COULEURS.humain);
+      gl.uniform3f(P3.u.u_clairRobot, ...COULEURS.robotClair);
+      gl.uniform3f(P3.u.u_clairHumain, ...COULEURS.humainClair);
+      gl.uniform3f(P3.u.u_lueur, ...COULEURS.lueur);
+      const L = this.lumiere;
+      gl.uniform4f(P3.u.u_lumiere, L.x, L.y, L.rayon, L.force);
+      gl.uniform3fv(P3.u.u_rampeRobot, COULEURS.rampeRobot.flat());
+      gl.uniform3fv(P3.u.u_rampeHumain, COULEURS.rampeHumain.flat());
+      gl.uniform3f(P3.u.u_lueurTuile, ...COULEURS.lueurTuile);
+      gl.uniform1f(P3.u.u_temps, performance.now() / 1000);
+      gl.uniform1f(P3.u.u_largeur, this.largeur);
       this.pleinEcran(P3);
     }
   }

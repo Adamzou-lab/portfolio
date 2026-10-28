@@ -22,7 +22,7 @@ files = [
     'js/intro.js', 'js/traversee.js', 'js/traversee-projects.js', 'js/information.js',
     'js/intro-ascii/rig.js', 'js/intro-ascii/ascii.js', 'js/intro-ascii/gl.js', 'js/intro-ascii/moteur.js',
     'js/vendor/leader-line.min.js', 'js/vendor/leader-line.LICENSE',
-    'assets/background.webp', 'assets/hand-robot.webp', 'assets/hand-human.webp',
+    'assets/background.webp', 'assets/hand-robot.webp', 'assets/hand-human.webp', 'assets/doigts-humain.png',
     'assets/traversee-background-v2.webp',
     'assets/documents/CV_ADAM_ZOUAOUI.pdf', 'assets/documents/CV_ADAM_ZOUAOUI.webp',
 ]

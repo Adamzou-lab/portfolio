@@ -1,4 +1,4 @@
-// Repris du prototype ~/mains-ascii (version validée par Adam le 28/10/2026), sous l'espace de noms IntroAscii.
+// Repris du prototype ~/mains-ascii (version validée par Adam le 28/10/2026 : mosaïque, coloriage et squelette dessinés par lui), sous l'espace de noms IntroAscii.
 // Squelette articulé des deux mains. Chaque main est découpée en pièces : l'avant-bras, la paume, et les
 // phalanges, chacune avec son pivot placé sur l'articulation visible de l'image d'origine (coordonnées de
 // l'image source 1536 × 1024, relevées à la loupe sur une grille de 10 px). Une pièce tourne autour de son
@@ -17,13 +17,15 @@
         // Bouts des doigts d'abord : ils l'emportent sur les phalanges qu'ils recouvrent.
         { nom: 'index_3', parent: 'index_2', pivot: [645, 516], masque: capsule([645, 516], [716, 524], 20), doigt: 'index' },
         { nom: 'majeur_2', parent: 'majeur_1', pivot: [636, 600], masque: capsule([636, 600], [678, 656], 18), doigt: 'majeur' },
-        { nom: 'annulaire_2', parent: 'annulaire_1', pivot: [588, 618], masque: capsule([588, 618], [598, 706], 21), doigt: 'annulaire' },
+        { nom: 'annulaire_2', parent: 'annulaire_1', pivot: [588, 618], masque: capsule([588, 622], [598, 706], 20), doigt: 'annulaire' },
         { nom: 'auriculaire', parent: 'paume', pivot: [528, 582], masque: capsule([530, 585], [540, 660], 22), doigt: 'auriculaire' },
         { nom: 'pouce_2', parent: 'pouce_1', pivot: [470, 716], masque: capsule([470, 716], [568, 720], 24), doigt: 'pouce' },
         { nom: 'index_2', parent: 'index_1', pivot: [555, 520], masque: capsule([555, 520], [645, 516], 25), doigt: 'index' },
         { nom: 'index_1', parent: 'paume', pivot: [497, 535], masque: capsule([497, 535], [555, 520], 26), doigt: 'index' },
-        { nom: 'majeur_1', parent: 'paume', pivot: [563, 553], masque: capsule([563, 553], [636, 600], 19), doigt: 'majeur' },
-        { nom: 'annulaire_1', parent: 'paume', pivot: [563, 575], masque: capsule([563, 575], [588, 618], 20), doigt: 'annulaire' },
+        // L'annulaire avant le majeur : leurs jointures ne sont qu'à 22 px l'une de l'autre, et le majeur prenait
+        // sinon la base de l'annulaire, qui restait en place quand il se pliait (la main se déchirait au milieu).
+        { nom: 'annulaire_1', parent: 'paume', pivot: [565, 580], masque: capsule([568, 588], [588, 618], 15), doigt: 'annulaire' },
+        { nom: 'majeur_1', parent: 'paume', pivot: [563, 553], masque: capsule([566, 552], [636, 600], 17), doigt: 'majeur' },
         { nom: 'pouce_1', parent: 'paume', pivot: [392, 712], masque: capsule([392, 712], [470, 716], 25), doigt: 'pouce' },
         // La paume : tout ce qui est au-delà du poignet.
         { nom: 'paume', parent: 'bras', pivot: [240, 650], masque: { type: 'demi-plan', point: [238, 650], dir: [0.97, -0.25] } },
@@ -41,27 +43,87 @@
     },
     humain: {
       flexion: -1, // main tendue vers la gauche : replier vers le bas, c'est tourner dans l'autre sens
+      // Coloriage d'Adam (outils/doigts.html, 28/10/2026) : le doigt de chaque pixel. Le maillage le suit pixel
+      // par pixel ; les capsules ne servent plus qu'à choisir la phalange dans un même doigt et à plier les
+      // articulations en douceur.
+      etiquettes: 'assets/doigts-humain.png',
+      // Squelette dessiné par Adam doigt après doigt (outils/squelette.html, 28/10/2026) : pour chaque doigt,
+      // les points de la base au bout ; `main` est le poignet. Il remplace les pièces ci-dessous (voir
+      // depuisDessin), qui ne servent plus que de largeurs. L'annulaire et l'auriculaire partent du dos de la
+      // main et passent derrière le pouce.
+      dessin: {
+        index: [[975, 502], [901, 512], [837, 522], [765, 526]],
+        majeur: [[987, 534], [937, 570], [903, 602], [873, 669]],
+        annulaire: [[1018, 548], [980, 592], [964, 638], [965, 691]],
+        auriculaire: [[1061, 563], [1044, 605], [1039, 643], [1039, 685]],
+        pouce: [[1153, 568], [1083, 579], [1018, 593], [951, 619]],
+        main: [1253, 536],
+      },
       pieces: [
         { nom: 'index_3', parent: 'index_2', pivot: [838, 521], masque: capsule([838, 521], [766, 527], 16), doigt: 'index' },
-        { nom: 'pouce_2', parent: 'pouce_1', pivot: [912, 602], masque: capsule([912, 602], [873, 666], 21), doigt: 'pouce' },
-        { nom: 'majeur_2', parent: 'doigts_bas', pivot: [966, 616], masque: capsule([966, 618], [965, 690], 22), doigt: 'majeur' },
-        { nom: 'annulaire_2', parent: 'doigts_bas', pivot: [1036, 614], masque: capsule([1036, 616], [1034, 684], 19), doigt: 'annulaire' },
         { nom: 'index_2', parent: 'index_1', pivot: [915, 515], masque: capsule([915, 515], [838, 521], 18), doigt: 'index' },
-        { nom: 'index_1', parent: 'paume', pivot: [1045, 522], masque: capsule([1045, 522], [915, 515], 19), doigt: 'index' },
-        { nom: 'pouce_1', parent: 'paume', pivot: [985, 556], masque: capsule([985, 558], [912, 602], 22), doigt: 'pouce' },
-        // Majeur et annulaire partent ensemble à l'horizontale avant de tomber.
-        { nom: 'doigts_bas', parent: 'paume', pivot: [1110, 598], masque: capsule([1110, 598], [962, 612], 19), doigt: 'bas' },
-        { nom: 'paume', parent: 'bras', pivot: [1255, 570], masque: { type: 'demi-plan', point: [1258, 572], dir: [-0.92, -0.39] } },
-        { nom: 'bras', parent: null, pivot: [1536, 690] },
+        // Pivot sur la limite coloriée entre l'index et le dos de la main (x 981), décalé de la largeur du pli
+        // (14 px) vers le bout : le pli commence exactement à la limite, sans marche.
+        { nom: 'index_1', parent: 'paume', pivot: [967, 518], masque: capsule([1045, 522], [915, 515], 19), doigt: 'index' },
+        // Le majeur : la longue phalange qui part sous l'index et descend vers la gauche.
+        { nom: 'majeur_2', parent: 'majeur_1', pivot: [912, 602], masque: capsule([912, 602], [873, 666], 21), doigt: 'majeur' },
+        { nom: 'majeur_1', parent: 'paume', pivot: [985, 556], masque: capsule([985, 550], [912, 594], 15), doigt: 'majeur' },
+        // L'annulaire passe derrière le pouce : on voit sa base au-dessus, entre le majeur et le pouce, et son
+        // bout qui ressort et pend dessous. Les deux bougent ensemble depuis la jointure.
+        { nom: 'annulaire_2', parent: 'annulaire_1', pivot: [966, 616], masque: capsule([966, 618], [965, 690], 22), doigt: 'annulaire' },
+        { nom: 'annulaire_1', parent: 'paume', pivot: [1020, 548], masque: capsule([1020, 548], [958, 580], 12), doigt: 'annulaire' },
+        // L'auriculaire, derrière le pouce lui aussi : on n'en voit que le bout qui pend.
+        { nom: 'auriculaire', parent: 'paume', pivot: [1036, 614], masque: capsule([1036, 616], [1034, 684], 19), doigt: 'auriculaire' },
+        // Le pouce : la grande pièce horizontale du dessous, devant l'annulaire et l'auriculaire.
+        { nom: 'pouce', parent: 'paume', pivot: [1150, 595], masque: capsule([1150, 595], [960, 612], 20), doigt: 'pouce' },
+        { nom: 'paume', parent: 'bras', pivot: [1255, 570], masque: { type: 'demi-plan', point: [1258, 572], dir: [-0.92, -0.39] }, etiquette: 'paume' },
+        { nom: 'bras', parent: null, pivot: [1536, 690], etiquette: 'poignet' },
       ],
       bout: { piece: 'index_3', point: [766, 527] },
-      ordre: ['bras', 'paume', 'doigts_bas', 'annulaire_2', 'majeur_2', 'pouce_1', 'pouce_2', 'index_1', 'index_2', 'index_3'],
+      ordre: ['bras', 'paume', 'auriculaire', 'annulaire_1', 'annulaire_2', 'pouce', 'majeur_1', 'majeur_2', 'index_1', 'index_2', 'index_3'],
       // Le détourage de l'image descend d'environ 20 px sur le dos de la main, entre la jointure de l'index
       // et le poignet, puis encore d'environ 18 px au poignet (x 1300) avec une encoche vers x 1370 :
       // on lisse le bord supérieur de la jointure jusqu'au bord de l'image (coordonnées source).
       lissageHaut: { de: 1000, a: 1536, fenetre: 70 },
     },
   };
+
+  // Squelette dessiné doigt après doigt (outils/squelette.html) : pour chaque doigt, les points de la base au
+  // bout ; chaque segment devient une phalange, qui plie autour de son premier point. Le point `main` est le
+  // poignet. Les largeurs viennent du squelette ci-dessus ; avec le coloriage, elles ne servent qu'à choisir
+  // la phalange à l'intérieur d'un doigt.
+  const DEVANT = ['auriculaire', 'annulaire', 'pouce', 'majeur', 'index']; // du fond vers le devant (main humaine)
+  function depuisDessin(rig, dessin) {
+    const largeur = (doigt) => {
+      const r = rig.pieces.filter((p) => p.doigt === doigt && p.masque && p.masque.r).map((p) => p.masque.r);
+      return r.length ? Math.round(r.reduce((a, b) => a + b, 0) / r.length) : 18;
+    };
+    const paume = rig.pieces.find((p) => p.nom === 'paume'), bras = rig.pieces.find((p) => p.nom === 'bras');
+    if (dessin.main) Object.assign(paume, { pivot: dessin.main, masque: Object.assign({}, paume.masque, { point: dessin.main }) });
+    const pieces = [], ordre = ['bras', 'paume'];
+    for (const doigt of DEVANT) {
+      const pts = dessin[doigt];
+      if (!pts || pts.length < 2) {
+        // Doigt non dessiné : on garde ses pièces d'origine.
+        for (const p of rig.pieces.filter((q) => q.doigt === doigt)) (pieces.push(p), ordre.push(p.nom));
+        continue;
+      }
+      const r = largeur(doigt);
+      for (let i = 0; i < pts.length - 1; i++) {
+        const nom = `${doigt}_${i + 1}`;
+        pieces.push({ nom, parent: i ? `${doigt}_${i}` : 'paume', pivot: pts[i], masque: capsule(pts[i], pts[i + 1], r), doigt });
+        ordre.push(nom);
+      }
+      if (doigt === 'index') rig.bout = { piece: `index_${pts.length - 1}`, point: pts[pts.length - 1] };
+    }
+    // Les bouts avant leurs phalanges : la règle « la première capsule qui contient le point l'emporte ».
+    pieces.sort((a, b) => (parseInt(b.nom.split('_').pop(), 10) || 1) - (parseInt(a.nom.split('_').pop(), 10) || 1));
+    rig.pieces = [...pieces, paume, bras];
+    rig.ordre = ordre;
+  }
+
+  // Le squelette dessiné par Adam pour la main humaine (l'outil d'essai du prototype n'est pas repris ici).
+  depuisDessin(RIGS.humain, RIGS.humain.dessin);
 
   // Matrices affines 2D au format du canevas : [a, b, c, d, e, f] pour x' = a x + c y + e, y' = b x + d y + f.
   const Affine = {
@@ -163,14 +225,16 @@
       }
       if (p.doigt === 'index') {
         // L'index part replié et se déplie pendant l'approche, de la base vers le bout.
-        const rang = { index_1: 0, index_2: 1, index_3: 2 }[n];
+        // Rang de la phalange, d'après le numéro de son nom (index_1 à la base) ; au-delà de la troisième, le
+        // repli de la troisième.
+        const rang = Math.min(2, Math.max(0, (parseInt(n.split('_').pop(), 10) || 1) - 1));
         const deplie = Math.min(1, Math.max(0, (e - 0.12 * rang) / (1 - 0.12 * rang)));
         let v = (1 - deplie * deplie * (3 - 2 * deplie)) * [0.22, 0.17, 0.12][rang];
         if (this.robot) v += this.reglages.get(n)?.v || 0;
         else {
           // L'index humain se lève un peu en respirant, puis tremble juste avant le contact.
           v += (1 - proche) * 0.035 * Math.sin(0.8 * t + rang) * e;
-          if (n === 'index_3') v += 0.03 * proche * Math.sin(t * 38);
+          if (n === this.rig.bout.piece) v += 0.03 * proche * Math.sin(t * 38);
         }
         return v;
       }
@@ -183,8 +247,11 @@
       if (this.robot) return base + (this.reglages.get(n)?.v || 0);
       // La main humaine respire : une vague parcourt les doigts, du pouce vers l'auriculaire.
       const vague = Math.sin(1.05 * t - 0.9 * k);
-      const ampleur = p.doigt === 'pouce' ? 0.04 : 0.07;
-      return base + ampleur * vague + 0.025 * Math.sin(0.43 * t + 1.7 * k);
+      // Le pouce passe devant l'annulaire et l'auriculaire, et l'image ne montre pas ce qu'il cache : il bouge à
+      // peine (1 à 2 px au bout), sans se replier pendant l'approche, pour ne pas découvrir de vide. De même
+      // pour la base de l'annulaire, coincée entre le majeur et le pouce : c'est son bout qui se balance.
+      if (p.doigt === 'pouce' || (p.doigt === 'annulaire' && p.parent === 'paume')) return 0.012 * vague;
+      return base + 0.07 * vague + 0.025 * Math.sin(0.43 * t + 1.7 * k);
     }
 
     // e : avancée de l'approche (0 à 1) ; proche : proximité des index ; dt : secondes écoulées.

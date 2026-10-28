@@ -56,6 +56,12 @@
       return bouts;
     }
 
+    // Lumière entre les index (centre en px CSS, proximité de 0 à 1, échelle de la vue) : les tuiles
+    // s'éclaircissent jusqu'au blanc autour d'elle, d'autant plus que les mains sont proches.
+    lumiere(centre, proche, s) {
+      this.rendu.lumiere = { x: centre[0], y: centre[1], rayon: s * (35 + 70 * proche), force: proche };
+    }
+
     // Mouvement réduit : les articulations se placent en coulisse, puis une seule image.
     figer(matrices) {
       this.reinitialiser(1);
@@ -80,8 +86,18 @@
     // Pixels décodés une fois pour toutes : WebKit peut sinon redécoder l'image à chaque lecture.
     const [robot, human] = await Promise.all([images.robot, images.human].map((img) => createImageBitmap(img).catch(() => img)));
     const moteur = new MoteurMains(rendu);
-    rendu.preparerMain('robot', new NS.MainPreparee(moteur.mains.robot, robot, cadres.robot), moteur.mains.robot);
-    rendu.preparerMain('human', new NS.MainPreparee(moteur.mains.human, human, cadres.human), moteur.mains.human);
+    // Coloriage des doigts (une couleur par doigt, fait par Adam) : chaque doigt ne bouge qu'avec ses pixels.
+    const coloriages = await Promise.all(['robot', 'human'].map((key) => {
+      const src = moteur.mains[key].rig.etiquettes;
+      if (!src) return null;
+      const img = new Image();
+      img.src = src;
+      return img.decode().then(() => img).catch(() => null);
+    }));
+    rendu.preparerMain('robot', new NS.MainPreparee(moteur.mains.robot, robot, cadres.robot, coloriages[0]), moteur.mains.robot);
+    rendu.preparerMain('human', new NS.MainPreparee(moteur.mains.human, human, cadres.human, coloriages[1]), moteur.mains.human);
+    // Mosaïque : tuiles en métal gris pour le robot, peau à peine teintée pour l'humain, lueur blanche au contact.
+    rendu.couleur = 4;
     moteur.redimensionner(vue);
     if (performance.now() - debut > PREPARATION_MAX) return abandon(moteur);
 

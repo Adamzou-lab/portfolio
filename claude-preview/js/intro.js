@@ -368,7 +368,10 @@
     // la lumière naît quand l'écart a parcouru la moitié du chemin
     const dNear = CONFIG.finalGap + Math.max(1, CONFIG.initialSeparation * 0.5);
     const near = clamp((dNear - dist) / (dNear - CONFIG.finalGap), 0, 1);
-    if (ascii.actif) ascii.moteur.proche = near; // l'index humain tremble juste avant le contact
+    if (ascii.actif) {
+      ascii.moteur.proche = near; // l'index humain tremble juste avant le contact
+      ascii.moteur.lumiere(mid, near, view.s); // les tuiles blanchissent autour de la lumière
+    }
     const bloom = clamp((t - PHASE.bloomStart) / (PHASE.bloomEnd - PHASE.bloomStart), 0, 1);
     const fade = clamp((t - PHASE.revealStart) / (1 - PHASE.revealStart), 0, 1);
 
