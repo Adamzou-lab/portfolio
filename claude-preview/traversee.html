@@ -6,7 +6,7 @@
 <title>adam. — Traversée</title>
 <meta name="description" content="Adam Zouaoui. Des POCs pour explorer, connecter et automatiser : orchestration d’agents IA, outils et validation humaine.">
 <meta name="theme-color" content="#f4f4f1">
-<script>document.documentElement.classList.add('intro-running')</script>
+<script>/* Intro à chaque arrivée de l’extérieur (nouvelle visite, lien externe, adresse tapée, rechargement) ; pas au retour d’À propos ou de Contact, ni par l’historique. ?intro=1 la force. */(function(){var d=document.documentElement;try{var q=new URLSearchParams(location.search),n=(performance.getEntriesByType('navigation')[0]||{}).type,r=document.referrer?new URL(document.referrer):null,interne=!!r&&r.origin===location.origin&&r.pathname!==location.pathname;if(q.get('intro')==='1'||n==='reload'||!(interne||n==='back_forward'))d.classList.add('intro-running')}catch(e){d.classList.add('intro-running')}})()</script>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter.woff2" crossorigin>
 <link rel="preload" as="image" href="assets/background.webp">
 <link rel="preload" as="image" href="assets/hand-robot.webp">

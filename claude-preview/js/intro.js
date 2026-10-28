@@ -588,7 +588,9 @@
   window.addEventListener('pagehide', () => cancelPlayback());
   window.addEventListener('pageshow', (event) => {
     if (!event.persisted || !introWanted || freezeT !== undefined) return;
-    start({ arrival: true });
+    // Retour par l'historique : l'intro a déjà été vue. Interrompue en partant, elle se termine sur le
+    // portfolio au lieu d'être rejouée.
+    if (state.mode !== 'done') finish();
   });
 
   async function start(options) {
