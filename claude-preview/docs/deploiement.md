@@ -2,6 +2,16 @@
 
 Dernière mise à jour : 24 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261024-185118` (pied de page commun, exemples du champ entiers, dossier Hbntory plus court ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
 
+## Intro avec les mains en caractères, 28 octobre (préparée en local, non publiée)
+
+Demande d’Adam : intégrer à l’intro les mains en caractères du prototype `~/mains-ascii` (version qu’il a validée le 28/10), en local d’abord. Branche locale `intro-mains-ascii`, rien de commité ni de publié.
+- Fichiers : `js/intro-ascii/rig.js`, `ascii.js`, `gl.js` (moteur du prototype, sous l’espace de noms `IntroAscii`) et `moteur.js` (pont avec l’intro), chargés par `traversee.html` avant `js/intro.js`, et ajoutés à la liste de `scripts/build-production.py`. La maquette Atelier ne les charge pas et garde les images.
+- `js/intro.js` garde son cadrage, son minutage, sa pose et sa lumière ; en caractères, la lumière suit les bouts des index animés, et le fond granuleux est atténué à 40 % sous les mains, puis rétabli sous le blanc.
+- Retour automatique aux images : scripts absents, pas de WebGL, préparation de plus de 1,5 s (2 s au plus en tout), test de vitesse à plus de 28 ms par image, contexte graphique perdu ou erreur pendant l’intro. Mouvement réduit : mains en caractères immobiles. `?mains=images` force les images, `portfolioIntro.ascii()` donne l’état.
+- Préparation accélérée sans changer le résultat (image préparée identique au pixel près à celle du prototype) : l’effacement des fils sous le poignet du robot passait 385 ms dans WebKit, 58 ms ensuite. Le départ de l’intro est retardé de 0,1 s dans WebKit et de 0,05 s dans Chromium ; le minutage ensuite est identique.
+- Défaut signalé par Adam, corrigé : au départ, les mains apparaissaient doigts tendus, comme à la fin, puis les index se repliaient d’un coup avant de se déplier. Les articulations sont désormais placées dans la pose de départ (index repliés) avant la première image, comme dans le prototype.
+- Contrôlé en local : Chromium et WebKit, 1440 × 900 et 390 × 844, mouvement réduit, sans WebGL, contexte perdu, Passer et rejouer, Atelier, tests 7/7, build `20261028-090909` (54 fichiers, aucune ressource manquante, adresses versionnées). Reste à juger sur le téléphone d’Adam avant toute publication.
+
 ## Textes restants de l’audit, 24 octobre (soir)
 
 Trois propositions validées telles quelles par Adam, publication autorisée explicitement (commit `ed68d67`) :

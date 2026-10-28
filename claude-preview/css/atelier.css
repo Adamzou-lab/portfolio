@@ -104,6 +104,9 @@ html.intro-leaving-portfolio .portfolio{transition-duration:380ms}
 .intro{position:fixed;inset:0;z-index:30;overflow:hidden;pointer-events:none;opacity:0}
 .intro__hand{position:absolute;max-width:none;will-change:transform;user-select:none;-webkit-user-drag:none}
 .intro__light{position:fixed;inset:0;width:100%;height:100%;z-index:31;pointer-events:none}
+/* Mains en caractères (js/intro-ascii/) : le canevas remplace les images, le fond s'atténue comme dans le prototype validé. */
+.intro__ascii{position:absolute;inset:0;width:100%;height:100%;display:none}.intro--ascii .intro__ascii{display:block}.intro--ascii .intro__hand{visibility:hidden}
+html.intro-ascii.intro-running .grain-bg img{opacity:.4}
 .intro__skip{position:fixed;z-index:32;top:max(16px,env(safe-area-inset-top,0px));right:var(--gutter);font:10px/1 var(--mono);text-transform:uppercase;letter-spacing:.12em;border:1px solid #0005;background:#fff9;border-radius:30px;padding:13px 20px;transition:opacity 300ms}
 .intro__skip.is-leaving{opacity:0;pointer-events:none}
 .footer-inner nav{flex-wrap:wrap}

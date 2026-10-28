@@ -20,6 +20,7 @@ site.mkdir(parents=True, exist_ok=False)
 files = [
     'css/atelier.css', 'css/traversee.css', 'css/information.css',
     'js/intro.js', 'js/traversee.js', 'js/traversee-projects.js', 'js/information.js',
+    'js/intro-ascii/rig.js', 'js/intro-ascii/ascii.js', 'js/intro-ascii/gl.js', 'js/intro-ascii/moteur.js',
     'js/vendor/leader-line.min.js', 'js/vendor/leader-line.LICENSE',
     'assets/background.webp', 'assets/hand-robot.webp', 'assets/hand-human.webp',
     'assets/traversee-background-v2.webp',

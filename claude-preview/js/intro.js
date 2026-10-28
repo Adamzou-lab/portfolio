@@ -114,6 +114,19 @@
   const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const isReduced = () => CONFIG.forceReduced || mqReduce.matches;
 
+  /* ===== Mains en caractères (js/intro-ascii/), sinon les images =====
+   * Le moteur anime les mains articulées et choisit à chaque image le caractère de chaque case. Sans ses
+   * scripts (maquette Atelier), sans WebGL, ou sur un appareil trop lent, l'intro garde ses images.
+   * ?mains=images force les images, pour comparer. */
+  const asciiVoulu = !!(window.IntroAscii && window.IntroAscii.creer) && params.get('mains') !== 'images';
+  const ascii = { moteur: null, actif: false, preparation: null, canvas: null };
+  if (asciiVoulu) {
+    ascii.canvas = document.createElement('canvas');
+    ascii.canvas.className = 'intro__ascii';
+    el.intro.append(ascii.canvas);
+    ascii.canvas.addEventListener('webglcontextlost', () => desactiverAscii());
+  }
+
   /* ===== Cadrage : source → écran ===== */
   const view = { vw: 0, vh: 0, s: 1, ox: 0, oy: 0, dpr: 1 };
   let solidWhite = false; // le canvas contient déjà un blanc plein
@@ -157,6 +170,7 @@
     solidWhite = false;
     el.canvas.width = Math.round(view.vw * view.dpr);
     el.canvas.height = Math.round(view.vh * view.dpr);
+    if (ascii.moteur) ascii.moteur.redimensionner(view);
   }
 
   /* ===== Pose des mains et ancres transformées ===== */
@@ -182,6 +196,66 @@
 
   function applyPose(key, pose) {
     el[key].style.transform = `translate3d(${pose.dx * view.s}px, ${pose.dy * view.s}px, 0) rotate(${pose.deg}deg)`;
+  }
+
+  // Même transformation que l'image, en matrice source → écran [a, b, c, d, e, f] pour le moteur en caractères.
+  function poseMatrix(key, pose) {
+    const h = HANDS[key], r = (pose.deg * Math.PI) / 180, c = Math.cos(r), si = Math.sin(r), k = view.s;
+    const tx = h.pivot[0] - c * h.pivot[0] + si * h.pivot[1] + pose.dx;
+    const ty = h.pivot[1] - si * h.pivot[0] - c * h.pivot[1] + pose.dy;
+    return [k * c, k * si, -k * si, k * c, view.ox + k * tx, view.oy + k * ty];
+  }
+  const poseMatrices = (e) => ({ robot: poseMatrix('robot', handPose('robot', e)), human: poseMatrix('human', handPose('human', e)) });
+  const fromScreen = (p) => [(p[0] - view.ox) / view.s, (p[1] - view.oy) / view.s];
+
+  function activerAscii(on) {
+    ascii.actif = on && !!ascii.moteur;
+    el.intro.classList.toggle('intro--ascii', ascii.actif);
+    root.classList.toggle('intro-ascii', ascii.actif);
+  }
+
+  // Au moindre problème du moteur, l'intro continue avec les images.
+  function desactiverAscii() {
+    ascii.moteur = null;
+    ascii.preparation = Promise.resolve(null);
+    activerAscii(false);
+  }
+
+  // Les mains en caractères à l'avancée e ; renvoie les bouts des index à l'écran, ou null avec les images.
+  function dessinerAscii(e, poses) {
+    if (!ascii.actif) return null;
+    try {
+      return ascii.moteur.dessiner(e, { robot: poseMatrix('robot', poses.robot), human: poseMatrix('human', poses.human) });
+    } catch (error) {
+      desactiverAscii();
+      return null;
+    }
+  }
+
+  // Mouvement réduit : mains en caractères immobiles, en pose finale.
+  function figerAscii() {
+    if (!ascii.actif) return;
+    try {
+      ascii.moteur.figer(poseMatrices(1));
+    } catch (error) {
+      desactiverAscii();
+    }
+  }
+
+  // Préparation du moteur, une fois : 2 s au plus, sinon les images.
+  function preparerAscii() {
+    const creation = window.IntroAscii.creer({
+      canvas: ascii.canvas,
+      images: { robot: el.robot, human: el.human },
+      cadres: HANDS,
+      vue: view,
+      matricesDepart: poseMatrices(0),
+    }).catch(() => null);
+    const delai = new Promise((r) => setTimeout(() => r(null), 2000));
+    return Promise.race([creation, delai]).then((moteur) => {
+      if (!moteur) creation.then((tard) => tard && tard.liberer());
+      return moteur;
+    });
   }
 
   /* ===== Lumière ===== */
@@ -283,8 +357,10 @@
     applyPose('robot', poses.robot);
     applyPose('human', poses.human);
 
-    const a = transformPoint('robot', poses.robot, HANDS.robot.tip);
-    const b = transformPoint('human', poses.human, HANDS.human.tip);
+    // En caractères, les doigts bougent : la lumière suit les bouts des index animés.
+    const bouts = dessinerAscii(e, poses);
+    const a = bouts ? fromScreen(bouts.robot) : transformPoint('robot', poses.robot, HANDS.robot.tip);
+    const b = bouts ? fromScreen(bouts.human) : transformPoint('human', poses.human, HANDS.human.tip);
     const dist = Math.hypot(b[0] - a[0], b[1] - a[1]);
     const mid = toScreen([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]);
     const angle = Math.atan2(b[1] - a[1], b[0] - a[0]);
@@ -292,6 +368,7 @@
     // la lumière naît quand l'écart a parcouru la moitié du chemin
     const dNear = CONFIG.finalGap + Math.max(1, CONFIG.initialSeparation * 0.5);
     const near = clamp((dNear - dist) / (dNear - CONFIG.finalGap), 0, 1);
+    if (ascii.actif) ascii.moteur.proche = near; // l'index humain tremble juste avant le contact
     const bloom = clamp((t - PHASE.bloomStart) / (PHASE.bloomEnd - PHASE.bloomStart), 0, 1);
     const fade = clamp((t - PHASE.revealStart) / (1 - PHASE.revealStart), 0, 1);
 
@@ -336,6 +413,7 @@
     state.revealed = true;
     // sous le blanc total : le portfolio (déjà rendu) devient visible, les mains disparaissent
     el.portfolio.style.transition = 'none'; // déjà rendu : visible d'un coup, caché par le blanc
+    if (ascii.actif) el.bg.style.transition = 'none'; // le fond, atténué sous les caractères, revient sous le blanc
     el.skip.classList.add('is-leaving');
     root.classList.remove('intro-running');
     root.classList.add('intro-revealing');
@@ -353,6 +431,8 @@
     el.canvas.style.transition = '';
     el.intro.style.transition = '';
     el.portfolio.style.transition = '';
+    activerAscii(false);
+    el.bg.style.transition = '';
     schedule(() => root.classList.remove('intro-revealing'), 900);
   }
 
@@ -408,6 +488,8 @@
     await Promise.all(imgs.map((img) => (img.decode ? img.decode() : Promise.resolve()).catch(() => {
       if (!img.complete || !img.naturalWidth) throw new Error('image');
     })));
+    if (asciiVoulu && !ascii.preparation) ascii.preparation = preparerAscii();
+    if (ascii.preparation) ascii.moteur = await ascii.preparation;
   }
 
   async function play({ arrival = false } = {}) {
@@ -435,11 +517,14 @@
     el.intro.style.opacity = '0';
     el.canvas.style.opacity = '';
     setRunning(true);
+    activerAscii(true);
+    if (ascii.actif) ascii.moteur.reinitialiser();
     layout();
     renderAt(0);
     if (isReduced()) {
       applyPose('robot', handPose('robot', 1));
       applyPose('human', handPose('human', 1));
+      figerAscii();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, el.canvas.width, el.canvas.height);
     }
@@ -473,13 +558,17 @@
       layout();
       if (state.mode === 'frozen') { renderAt(freezeT); return; }
       if (state.mode !== 'playing') return;
-      if (isReduced()) { applyPose('robot', handPose('robot', 1)); applyPose('human', handPose('human', 1)); }
+      if (isReduced()) { applyPose('robot', handPose('robot', 1)); applyPose('human', handPose('human', 1)); figerAscii(); }
       else renderAt(clamp(state.elapsed / CONFIG.duration, 0, 1));
     });
   });
 
   // pour régler en direct depuis la console : portfolioIntro.config.finalGap = 20; portfolioIntro.play()
-  Object.assign(api, { config: CONFIG, play, skip, renderAt: (t) => { layout(); return renderAt(t); }, view, hands: HANDS });
+  Object.assign(api, {
+    config: CONFIG, play, skip, renderAt: (t) => { layout(); return renderAt(t); }, view, hands: HANDS,
+    // état des mains en caractères : actives ou non, et ms par image mesurées au test de vitesse
+    ascii: () => ({ voulu: asciiVoulu, actif: ascii.actif, pret: !!ascii.moteur, msParImage: ascii.moteur ? +ascii.moteur.vitesse.toFixed(1) : null }),
+  });
   window.portfolioIntro = api;
 
   // ?t=0.4 : fige l'intro à cet instant (0 → 1), utile pour régler une image précise
@@ -487,6 +576,7 @@
   function freeze(t) {
     state.mode = 'frozen';
     setRunning(true);
+    activerAscii(true);
     el.intro.style.opacity = '1';
     layout();
     if (t >= PHASE.revealStart) revealPortfolio();
