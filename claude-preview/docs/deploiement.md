@@ -1,14 +1,16 @@
 # Publication et maintenance d’adamzou.fr
 
-Dernière mise à jour : 28 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261028-094606` (intro avec les mains en caractères, sans bouton Passer, jouée seulement à l’arrivée de l’extérieur ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+Dernière mise à jour : 28 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261028-124014` (intro avec les mains en mosaïque de caractères, doigts coloriés et squelette dessiné par Adam, sans bouton Passer, jouée seulement à l’arrivée de l’extérieur ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
 
-## Mosaïque, coloriage et squelette d’Adam, 28 octobre (préparée en local, non publiée)
+## Mosaïque, coloriage et squelette d’Adam, 28 octobre
 
-Demande d’Adam (« c’est parfait intégrons le ») après mise au point dans le prototype `~/mains-ascii` : branche locale `intro-mosaique`.
+Demande d’Adam (« c’est parfait intégrons le ») après mise au point dans le prototype `~/mains-ascii`, préparée sur la branche locale `intro-mosaique`, puis publiée sur son autorisation explicite (« oui, mets en ligne ») : commit `0cc3414`.
 - Mains en mosaïque : chaque case est une tuile pleine dont la teinte suit le ton de l’image (métal gris et noir pour le robot, peau à peine teintée pour l’humain), caractère gravé, reflet qui glisse, tuiles qui blanchissent autour de la lumière au contact (`rendu.couleur = 4`, `MoteurMains.lumiere`).
 - Main humaine découpée d’après le coloriage des doigts fait par Adam (`assets/doigts-humain.png`, ajouté à la liste de `scripts/build-production.py`) et son squelette dessiné doigt après doigt (`dessin` dans `js/intro-ascii/rig.js`) ; chaque doigt ne bouge qu’avec ses pixels et déborde de 6 px sous ses voisins. L’outil d’essai du prototype (`?squelette=perso`) n’est pas repris.
 - Préparation plus longue : environ 250 ms de plus dans WebKit (calculs du coloriage, accélérés sans changer le résultat), départ de l’intro à 0,46 s au lieu de 0,2 s ; le minutage ensuite est inchangé. Le retour aux images reste à 1,5 s de préparation.
 - Contrôlé en local : Chromium et WebKit, 1440 × 900 et 390 × 844, mouvement réduit, sans WebGL, contexte perdu, Échap, Atelier, tests 7/7, build `20261028-121502` (55 fichiers, aucune ressource manquante, aucune erreur).
+- Mise en ligne par le Terminal de Chilemme (SSH toujours refusé), en une commande : `git pull` dans `/tmp/portfolio-src`, contrôle de la pointe `0cc3414`, build et `deploy-production-remote.py`. Installation `/var/www/pocs-releases/20261028-124014/`, sauvegarde `/var/backups/adamzou/20261028-124014/`, précédente racine `20261028-094606`, `nginx -t` réussi, page servie au deuxième contrôle.
+- Contrôle public : version `20261028-124014` servie ; `js/intro.js`, les quatre `js/intro-ascii/*.js` et `assets/doigts-humain.png` identiques aux sources ; À propos et Contact en 200, redirections en 301 ; mosaïque active dans Chromium et WebKit, 1440 × 900 et 390 × 844, sans erreur (hors `/favicon.ico`, 404 comme avant) ; règle d’arrivée vérifiée sur les parcours réels.
 
 ## Bouton Passer retiré, intro seulement à l’arrivée, 28 octobre
 
