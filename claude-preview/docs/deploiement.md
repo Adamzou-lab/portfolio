@@ -1,6 +1,14 @@
 # Publication et maintenance d’adamzou.fr
 
-Dernière mise à jour : 28 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261028-093317` (intro avec les mains en caractères ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+Dernière mise à jour : 28 octobre 2026. Adam a explicitement autorisé le remplacement de son ancien portfolio par Traversée. La version active est `20261028-094606` (intro avec les mains en caractères, sans bouton Passer, jouée seulement à l’arrivée de l’extérieur ; voir ci-dessous). Depuis `20261005-072626`, l’intro se lance à chaque arrivée sur l’accueil. Les deux versions conservent À propos et Contact en haut à droite, « adam. » à gauche et l’absence des commandes de relance et de ralenti. Les contrôles initiaux et ceux des mises à jour sont consignés ci-dessous.
+
+## Bouton Passer retiré, intro seulement à l’arrivée, 28 octobre
+
+Demandes d’Adam, publiées sur son accord (commit `5923f24`) :
+- Plus de bouton « Passer » pendant l’intro de Traversée (`.intro__skip{display:none}` dans `css/traversee.css` ; la maquette Atelier garde le sien). La touche Échap passe toujours l’intro.
+- L’intro n’est plus rejouée au retour d’À propos ou de Contact, ni par l’historique (remplace la règle du 5 octobre). Le script du head de `traversee.html` l’active pour une nouvelle visite, un lien externe, une adresse tapée, un rechargement ou `?intro=1`, et non quand la page de provenance est une autre page du site ou que la navigation vient de l’historique. Au retour par le cache de navigation, `js/intro.js` ne la rejoue plus ; interrompue en partant, elle se termine sur le portfolio.
+- Contrôlé sur la version construite puis en ligne, dans Chromium et WebKit : première visite, rechargement et arrivée depuis LinkedIn jouent l’intro ; accueil, À propos, accueil par le lien, Contact, accueil par Retour ne la jouent pas, portfolio visible ; bouton absent ; aucune erreur ; tests 7/7.
+- Mise en ligne de nouveau par le Terminal de Chilemme (SSH toujours refusé) : `git pull` dans `/tmp/portfolio-src`, contrôle de la pointe `5923f24`, build et `deploy-production-remote.py` en une commande. Installation `/var/www/pocs-releases/20261028-094606/`, sauvegarde `/var/backups/adamzou/20261028-094606/`, précédente racine `20261028-093317`, `nginx -t` réussi, page servie au deuxième contrôle. `js/intro.js`, `css/traversee.css` et `js/intro-ascii/moteur.js` publics identiques aux sources.
 
 ## Intro avec les mains en caractères, 28 octobre
 
